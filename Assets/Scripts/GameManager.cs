@@ -7,8 +7,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    [SerializeField]
-    TextMeshProUGUI scoreText;
+    //[SerializeField]
+    //TextMeshProUGUI scoreText;
 
     private int currentScore = 0;
 
@@ -27,12 +27,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        scoreText.text = "Score: 0";
+        //scoreText.text = "Score: 0";
     }
 
     public void IncreaseScore(int scoreToAdd)
     {
         currentScore += scoreToAdd;
-        scoreText.text = "Score: " + currentScore;
+        //scoreText.text = "Score: " + currentScore;
     }
 }

@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class Player : Interactable
+public class Player : MonoBehaviour
 {
+    public static Player instance;
 
     Interactable currentInteractable;
 
     Collectible currentCollectible;
 
     GiftBox currentGiftBox;
+
+    [SerializeField]
+    GameObject currentGun;
 
     [SerializeField]
     TextMeshProUGUI interactionText;
@@ -27,7 +31,7 @@ public class Player : Interactable
         RaycastHit hitInfo;
         if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hitInfo, interactionDistance))
         {
-            Debug.Log(hitInfo.transform.name);
+            //Debug.Log(hitInfo.transform.name);
 
             hitInfo.transform.TryGetComponent<Collectible>(out currentCollectible);
             hitInfo.transform.TryGetComponent<GiftBox>(out currentGiftBox);
@@ -64,6 +68,16 @@ public class Player : Interactable
         {
             currentGiftBox.Interact(this);
         }
+    }
+
+    void OnFire()
+    {
+        currentGun.GetComponent<Gun>().Shoot();
+    }
+
+    void OnAutoFire()
+    {
+        currentGun.GetComponent<Gun>().Shoot();
     }
 
 }
