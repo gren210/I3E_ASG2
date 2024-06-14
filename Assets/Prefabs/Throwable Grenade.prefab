@@ -56,6 +56,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc886d0b0308a64089f2172dacc4b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grenadeDistance: 400
   delay: 3
   effect: {fileID: 0}
   explodeRadius: 15
@@ -132,9 +133,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2190142507114214862}
   serializedVersion: 4
-  m_Mass: 2
-  m_Drag: 1
-  m_AngularDrag: 1
+  m_Mass: 0.5
+  m_Drag: 0.2
+  m_AngularDrag: 0.2
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}

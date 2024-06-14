@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Grenade : Interactable
 {
+    [SerializeField]
+    float grenadeDistance;
 
     public float delay = 3f;
 
@@ -17,6 +19,8 @@ public class Grenade : Interactable
     public float explodeDamage = 70f;
 
     public bool thrown = false;
+
+    bool set = true;
 
     bool exploded = false;
 
@@ -51,6 +55,18 @@ public class Grenade : Interactable
     {
         if (thrown)
         {
+            if (set)
+            {
+                gameObject.transform.parent = null;
+                gameObject.GetComponent<SphereCollider>().enabled = true;
+                gameObject.GetComponent<Rigidbody>().isKinematic = false;
+                gameObject.GetComponent<Rigidbody>().AddForce(grenadeDistance * GameManager.instance.playerCamera.transform.forward);
+                GameManager.instance.grenadeCount -= 2;
+                GameManager.instance.currentGrenade = null;
+                GameManager.instance.currentEquippable = null;
+                set = false;
+                Debug.Log(GameManager.instance.grenadeCount);
+            }
             timer -= Time.deltaTime;
             if (timer < 0)
             {
@@ -64,4 +80,21 @@ public class Grenade : Interactable
         }
     }
 
+    public override void Interact(Player thePlayer)
+    {
+        if(GameManager.instance.currentEquippable != null)
+        {
+            GameManager.instance.currentEquippable.SetActive(false);
+        }
+        GameManager.instance.grenadeCount += 1;
+        gameObject.transform.SetParent(GameManager.instance.playerCamera.transform, false);
+        gameObject.GetComponent<SphereCollider>().enabled = false;
+        gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        GameManager.instance.currentGrenade = gameObject;
+        GameManager.instance.currentEquippable = gameObject;
+        GameManager.instance.currentEquippable.SetActive(true);
+        gameObject.transform.position = GameManager.instance.equipPosition.transform.position;
+        gameObject.transform.eulerAngles = GameManager.instance.equipPosition.transform.eulerAngles;
+        Debug.Log("negga");
+    }
 }

@@ -16,17 +16,23 @@ public class GameManager : MonoBehaviour
 
     public float playerHealth = 100;
 
-    public float grenadeCount = 0;
-
     public GameObject currentGrenade = null;
 
     public GameObject currentPrimary = null;
 
     public bool isPrimary = false;
 
+    public int grenadeCount = 0;
+
+    public GameObject equipPosition;
+
     public GameObject currentFlashlight;
 
     public GameObject currentEquippable = null;
+
+    public Transform playerCamera;
+
+    public GameObject equipParent;
 
     private void Awake()
     {

@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     GameObject equippedGrenade;
 
     [SerializeField]
-    float grenadeDistance;
+    GameObject flashlight;
 
     public TextMeshProUGUI interactionText;
 
@@ -89,28 +89,65 @@ public class Player : MonoBehaviour
         }
         if (currentGrenadePickup != null)
         {
-            currentGrenadePickup.Interact(this);
+            if (currentGrenadePickup.thrown == false)
+            {
+                currentGrenadePickup.Interact(this);
+            }
         }
     }
 
     void OnFire()
     {
-        if(GameManager.instance.currentEquippable == currentGun)
+        if(GameManager.instance.currentEquippable != null)
         {
-            currentGun.GetComponent<Gun>().Shoot();
+            if (GameManager.instance.currentEquippable == GameManager.instance.currentPrimary)
+            {
+                GameManager.instance.currentPrimary.GetComponent<Gun>().Shoot();
+            }
+            else if (GameManager.instance.currentEquippable == GameManager.instance.currentGrenade)
+            {
+                GameManager.instance.currentEquippable.GetComponent<Grenade>().thrown = true;
+            }
         }
-        else if (GameManager.instance.currentEquippable == GameManager.instance.currentGrenade)
+    }
+
+    void OnEquipGun()
+    {
+        if (GameManager.instance.currentEquippable != null)
         {
-            GameObject newGrenade = Instantiate(equippedGrenade, GameManager.instance.currentGrenade.transform.position, GameManager.instance.currentGrenade.transform.rotation);
-            newGrenade.GetComponent<Grenade>().thrown = true;
-            newGrenade.GetComponent<Rigidbody>().AddForce(grenadeDistance * playerCamera.transform.forward);
-            //GameManager.instance.currentGrenade.GetComponent<Grenade>().Shoot();
+            GameManager.instance.currentEquippable.SetActive(false);
         }
-
-
+        GameManager.instance.currentEquippable = GameManager.instance.currentPrimary;
+        Debug.Log(GameManager.instance.currentPrimary);
+        GameManager.instance.currentEquippable.SetActive(true);
 
     }
 
+    void OnEquipGrenade()
+    {
+        if(GameManager.instance.grenadeCount > 0)
+        {
+            if (GameManager.instance.currentEquippable != null)
+            {
+                GameManager.instance.currentEquippable.SetActive(false);
+            }
+            GameManager.instance.currentEquippable = GameManager.instance.currentGrenade;
+            Debug.Log(GameManager.instance.currentGrenade);
+            GameManager.instance.currentEquippable.SetActive(true);
+        }
+    }
+
+    void OnFlashlight()
+    {
+        if (flashlight.activeSelf == false)
+        {
+            flashlight.SetActive(true);
+        }
+        else
+        {
+            flashlight.SetActive(false);
+        }
+    }
 
 
     //void OnAutoFire()
@@ -118,43 +155,7 @@ public class Player : MonoBehaviour
         //currentGun.GetComponent<Gun>().Shoot();
     //}
 
-    void OnEquipGun()
-    {
-        if (!GameManager.instance.isPrimary)
-        {
-            Debug.Log("no");
-        }
-        else
-        {
-            if (GameManager.instance.currentEquippable != null)
-            {
-                GameManager.instance.currentEquippable.SetActive(false);
-            }
-            //GameManager.instance.currentPrimary.SetActive(true);
-            GameManager.instance.currentEquippable = GameManager.instance.currentPrimary;
-            GameManager.instance.currentEquippable.SetActive(true);
-        }
-        
-    }
-
-    void OnEquipGrenade()
-    {
-        if (GameManager.instance.currentEquippable != null)
-        {
-            GameManager.instance.currentEquippable.SetActive(false);
-        }
-        //GameManager.instance.currentGrenade.SetActive(true);
-        GameManager.instance.currentEquippable = GameManager.instance.currentGrenade;
-        GameManager.instance.currentEquippable.SetActive(true);
-    }
-
-    void OnHolster()
-    {
-        if(GameManager.instance.currentEquippable != null)
-        {
-            GameManager.instance.currentEquippable.SetActive(false);
-        }
-    }
+    
 
 }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class Gun : Interactable
@@ -17,7 +18,7 @@ public class Gun : Interactable
     public AudioSource gunAudioSource;
 
     [SerializeField]
-    Transform playerCamera;
+    float swapThrowForce;
 
     // Start is called before the first frame update
     void Start()
@@ -38,7 +39,7 @@ public class Gun : Interactable
         {
             gunAudioSource.PlayOneShot(gunShot);
             currentCooldown = fireCooldown;
-            if(Physics.Raycast(playerCamera.position, playerCamera.forward, out hitInfo, bulletRange))
+            if(Physics.Raycast(GameManager.instance.playerCamera.position, GameManager.instance.playerCamera.forward, out hitInfo, bulletRange))
             {
                 if (hitInfo.transform.TryGetComponent<Enemy>(out Enemy enemy))
                 {
@@ -47,23 +48,37 @@ public class Gun : Interactable
                 }
             }
         }
-
-
     }
 
     public override void Interact(Player thePlayer)
     {
-        if (!GameManager.instance.isPrimary)
+        if (GameManager.instance.currentPrimary != null)
         {
-            GameManager.instance.isPrimary = true;
+            if (GameManager.instance.currentPrimary.activeSelf == false)
+            {
+                GameManager.instance.currentPrimary.SetActive(true);
+            }
+            GameManager.instance.currentPrimary.transform.parent = null;
+            GameManager.instance.currentPrimary.GetComponent<BoxCollider>().enabled = true;
+            GameManager.instance.currentPrimary.GetComponent<Rigidbody>().isKinematic = false;
+            GameManager.instance.currentPrimary.GetComponent<Rigidbody>().AddForce(swapThrowForce * GameManager.instance.playerCamera.transform.forward);
         }
-        if (GameManager.instance.currentEquippable != null) 
+        if(GameManager.instance.currentEquippable != null && GameManager.instance.currentEquippable != GameManager.instance.currentPrimary)
         {
             GameManager.instance.currentEquippable.SetActive(false);
         }
-        GameManager.instance.currentEquippable = GameManager.instance.currentPrimary;
+        gameObject.transform.SetParent(GameManager.instance.playerCamera.transform, false);
+
+        gameObject.GetComponent<BoxCollider>().enabled = false;
+        gameObject.GetComponent<Rigidbody>().isKinematic = true;
+
+        GameManager.instance.currentPrimary = gameObject;
+        GameManager.instance.currentEquippable = gameObject;
         GameManager.instance.currentEquippable.SetActive(true);
-        Destroy(gameObject);
+
+        gameObject.transform.position = GameManager.instance.equipPosition.transform.position;
+        gameObject.transform.eulerAngles = GameManager.instance.equipPosition.transform.eulerAngles;
+
     }
 
 }
