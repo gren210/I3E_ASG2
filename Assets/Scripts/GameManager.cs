@@ -10,7 +10,23 @@ public class GameManager : MonoBehaviour
     //[SerializeField]
     //TextMeshProUGUI scoreText;
 
+    public TextMeshProUGUI healthText;
+
     private int currentScore = 0;
+
+    public float playerHealth = 100;
+
+    public float grenadeCount = 0;
+
+    public GameObject currentGrenade = null;
+
+    public GameObject currentPrimary = null;
+
+    public bool isPrimary = false;
+
+    public GameObject currentFlashlight;
+
+    public GameObject currentEquippable = null;
 
     private void Awake()
     {
@@ -28,6 +44,12 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         //scoreText.text = "Score: 0";
+    }
+
+    private void Update()
+    {
+        healthText.text = "Health: " + playerHealth;
+
     }
 
     public void IncreaseScore(int scoreToAdd)

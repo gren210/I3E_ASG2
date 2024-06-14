@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gun : MonoBehaviour
+public class Gun : Interactable
 {
     public float fireCooldown;
 
@@ -11,6 +11,10 @@ public class Gun : MonoBehaviour
     public float damage;
 
     public float bulletRange;
+
+    public AudioClip gunShot;
+
+    public AudioSource gunAudioSource;
 
     [SerializeField]
     Transform playerCamera;
@@ -32,6 +36,7 @@ public class Gun : MonoBehaviour
         RaycastHit hitInfo;
         if (currentCooldown <= 0f)
         {
+            gunAudioSource.PlayOneShot(gunShot);
             currentCooldown = fireCooldown;
             if(Physics.Raycast(playerCamera.position, playerCamera.forward, out hitInfo, bulletRange))
             {
@@ -45,4 +50,20 @@ public class Gun : MonoBehaviour
 
 
     }
+
+    public override void Interact(Player thePlayer)
+    {
+        if (!GameManager.instance.isPrimary)
+        {
+            GameManager.instance.isPrimary = true;
+        }
+        if (GameManager.instance.currentEquippable != null) 
+        {
+            GameManager.instance.currentEquippable.SetActive(false);
+        }
+        GameManager.instance.currentEquippable = GameManager.instance.currentPrimary;
+        GameManager.instance.currentEquippable.SetActive(true);
+        Destroy(gameObject);
+    }
+
 }

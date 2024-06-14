@@ -13,15 +13,25 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     float enemySpeed;
 
-    public float enemyHealth;
+    [SerializeField]
+    public float enemyHealth = 100;
 
-    //public NavMeshAgent enemy;
+    [SerializeField]
+    float enemyDamage = 5;
 
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    float damageDistance = 2f;
+
+    [SerializeField]
+    float damageTimer = 1f;
+
+    private float currentTimer;
+
+    private void Start()
     {
-        
+        currentTimer = 5;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -29,8 +39,20 @@ public class Enemy : MonoBehaviour
         //Debug.Log(Vector3.Distance(playerTarget.transform.position, transform.position));
         if (Vector3.Distance(playerTarget.transform.position, transform.position) <= hostileDistance)
         {
-            transform.position = Vector3.MoveTowards(transform.position, playerTarget.transform.position, enemySpeed * Time.deltaTime);
-            transform.LookAt(playerTarget.transform);
+            if (Vector3.Distance(playerTarget.transform.position, transform.position) <= damageDistance)
+            {
+                if (currentTimer >= damageTimer)
+                {
+                    GameManager.instance.playerHealth -= enemyDamage;
+                    currentTimer = 0;
+                }
+                currentTimer += Time.deltaTime;
+            }
+            else
+            {
+                transform.position = Vector3.MoveTowards(transform.position, playerTarget.transform.position, enemySpeed * Time.deltaTime);
+                transform.LookAt(playerTarget.transform);
+            }
         }
 
         if(enemyHealth <= 0) 

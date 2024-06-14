@@ -13,11 +13,24 @@ public class Player : MonoBehaviour
 
     GiftBox currentGiftBox;
 
-    [SerializeField]
-    GameObject currentGun;
+    Gun currentGunPickup;
+
+    Grenade currentGrenadePickup;
+
+    public GameObject currentGun;
 
     [SerializeField]
-    TextMeshProUGUI interactionText;
+    GameObject equippedGun;
+
+    [SerializeField]
+    GameObject equippedGrenade;
+
+    [SerializeField]
+    float grenadeDistance;
+
+    public TextMeshProUGUI interactionText;
+
+    public TextMeshProUGUI jumpText;
 
     [SerializeField]
     Transform playerCamera;
@@ -35,6 +48,8 @@ public class Player : MonoBehaviour
 
             hitInfo.transform.TryGetComponent<Collectible>(out currentCollectible);
             hitInfo.transform.TryGetComponent<GiftBox>(out currentGiftBox);
+            hitInfo.transform.TryGetComponent<Gun>(out currentGunPickup);
+            hitInfo.transform.TryGetComponent<Grenade>(out currentGrenadePickup);
 
             if (hitInfo.transform.TryGetComponent<Interactable>(out currentInteractable))
             {
@@ -68,16 +83,78 @@ public class Player : MonoBehaviour
         {
             currentGiftBox.Interact(this);
         }
+        if (currentGunPickup != null)
+        {
+            currentGunPickup.Interact(this);
+        }
+        if (currentGrenadePickup != null)
+        {
+            currentGrenadePickup.Interact(this);
+        }
     }
 
     void OnFire()
     {
-        currentGun.GetComponent<Gun>().Shoot();
+        if(GameManager.instance.currentEquippable == currentGun)
+        {
+            currentGun.GetComponent<Gun>().Shoot();
+        }
+        else if (GameManager.instance.currentEquippable == GameManager.instance.currentGrenade)
+        {
+            GameObject newGrenade = Instantiate(equippedGrenade, GameManager.instance.currentGrenade.transform.position, GameManager.instance.currentGrenade.transform.rotation);
+            newGrenade.GetComponent<Grenade>().thrown = true;
+            newGrenade.GetComponent<Rigidbody>().AddForce(grenadeDistance * playerCamera.transform.forward);
+            //GameManager.instance.currentGrenade.GetComponent<Grenade>().Shoot();
+        }
+
+
+
     }
 
-    void OnAutoFire()
+
+
+    //void OnAutoFire()
+    //{
+        //currentGun.GetComponent<Gun>().Shoot();
+    //}
+
+    void OnEquipGun()
     {
-        currentGun.GetComponent<Gun>().Shoot();
+        if (!GameManager.instance.isPrimary)
+        {
+            Debug.Log("no");
+        }
+        else
+        {
+            if (GameManager.instance.currentEquippable != null)
+            {
+                GameManager.instance.currentEquippable.SetActive(false);
+            }
+            //GameManager.instance.currentPrimary.SetActive(true);
+            GameManager.instance.currentEquippable = GameManager.instance.currentPrimary;
+            GameManager.instance.currentEquippable.SetActive(true);
+        }
+        
+    }
+
+    void OnEquipGrenade()
+    {
+        if (GameManager.instance.currentEquippable != null)
+        {
+            GameManager.instance.currentEquippable.SetActive(false);
+        }
+        //GameManager.instance.currentGrenade.SetActive(true);
+        GameManager.instance.currentEquippable = GameManager.instance.currentGrenade;
+        GameManager.instance.currentEquippable.SetActive(true);
+    }
+
+    void OnHolster()
+    {
+        if(GameManager.instance.currentEquippable != null)
+        {
+            GameManager.instance.currentEquippable.SetActive(false);
+        }
     }
 
 }
+
