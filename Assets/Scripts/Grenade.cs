@@ -12,7 +12,7 @@ public class Grenade : Interactable
 
     float timer;
 
-    public GameObject effect;
+    public ParticleSystem effect;
 
     public float explodeRadius = 50f;
 
@@ -24,8 +24,27 @@ public class Grenade : Interactable
 
     bool exploded = false;
 
+    [SerializeField]
+    AudioClip grenadeSound;
+
+    [SerializeField]
+    float shakeTimer;
+
+    float shakeTimerStart;
+
+    [SerializeField]
+    float shakeIntensity;
+
+    [SerializeField]
+    float shakeFrequency;
+
     private void GrenadeExplode()
     {
+        //Instantiate(effect, transform.position, transform.rotation);
+        effect.GetComponent<ParticleSystem>().Play();
+
+        AudioSource.PlayClipAtPoint(grenadeSound, transform.position);
+
         Collider[] entities = Physics.OverlapSphere(transform.position, explodeRadius);
 
         foreach (Collider collider in entities) 
@@ -40,8 +59,6 @@ public class Grenade : Interactable
                 GameManager.instance.playerHealth -= explodeDamage;
             }
         }
-
-        Destroy(gameObject);
     }
 
     // Start is called before the first frame update
@@ -74,14 +91,30 @@ public class Grenade : Interactable
                 {
                     GrenadeExplode();
                     exploded = true;
+                    gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                    gameObject.GetComponent<MeshFilter>().mesh = null;
+                    Destroy(gameObject,2f);
+                    Destroy(effect, 2f);
+                    ShakeCamera(shakeIntensity, shakeFrequency);
+                    shakeTimerStart = shakeTimer;
+
                 }
 
+            }
+        }
+        if (shakeTimerStart > 0)
+        {
+            shakeTimerStart -= Time.deltaTime;
+            if (shakeTimerStart <= 0f)
+            {
+                ShakeCamera(0f, 0f);
             }
         }
     }
 
     public override void Interact(Player thePlayer)
     {
+        base.Interact(thePlayer);
         if(GameManager.instance.currentEquippable != null)
         {
             GameManager.instance.currentEquippable.SetActive(false);
@@ -97,4 +130,9 @@ public class Grenade : Interactable
         gameObject.transform.eulerAngles = GameManager.instance.equipPosition.transform.eulerAngles;
         Debug.Log("negga");
     }
+
+    //public override void ShakeCamera(float shakeIntensity, float shakeFrequency)
+    //{
+        //base.ShakeCamera(shakeIntensity,shakeFrequency);
+    //}
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
@@ -20,6 +21,23 @@ public class Gun : Interactable
     [SerializeField]
     float swapThrowForce;
 
+    [SerializeField]
+    float shakeTimer;
+
+    float shakeTimerStart;
+
+    [SerializeField]
+    float shakeIntensity;
+
+    [SerializeField]
+    float shakeFrequency;
+
+    [SerializeField]
+    GameObject gunMuzzle;
+
+    [SerializeField]
+    ParticleSystem muzzleFlash;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +48,15 @@ public class Gun : Interactable
     void Update()
     {
         currentCooldown -= Time.deltaTime;
+
+        if (shakeTimerStart > 0)
+        {
+            shakeTimerStart -= Time.deltaTime;
+            if (shakeTimerStart <= 0f)
+            {
+                ShakeCamera(0f, 0f);
+            }
+        }
     }
 
     public void Shoot()
@@ -38,8 +65,11 @@ public class Gun : Interactable
         if (currentCooldown <= 0f)
         {
             gunAudioSource.PlayOneShot(gunShot);
+            muzzleFlash.GetComponent<ParticleSystem>().Play();
             currentCooldown = fireCooldown;
-            if(Physics.Raycast(GameManager.instance.playerCamera.position, GameManager.instance.playerCamera.forward, out hitInfo, bulletRange))
+            ShakeCamera(shakeIntensity, shakeFrequency);
+            shakeTimerStart = shakeTimer;
+            if (Physics.Raycast(GameManager.instance.playerCamera.position, GameManager.instance.playerCamera.forward, out hitInfo, bulletRange))
             {
                 if (hitInfo.transform.TryGetComponent<Enemy>(out Enemy enemy))
                 {

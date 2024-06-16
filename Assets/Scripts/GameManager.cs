@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,8 +17,10 @@ public class GameManager : MonoBehaviour
 
     public float playerHealth = 100;
 
+    [HideInInspector]
     public GameObject currentGrenade = null;
 
+    [HideInInspector]
     public GameObject currentPrimary = null;
 
     public bool isPrimary = false;
@@ -31,6 +34,8 @@ public class GameManager : MonoBehaviour
     public GameObject currentEquippable = null;
 
     public Transform playerCamera;
+
+    public CinemachineVirtualCamera virtualCamera;
 
     public GameObject equipParent;
 
