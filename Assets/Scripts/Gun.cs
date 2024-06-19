@@ -19,6 +19,9 @@ public class Gun : Interactable
     public AudioSource gunAudioSource;
 
     [SerializeField]
+    GameObject gunAudio;
+
+    [SerializeField]
     float swapThrowForce;
 
     [SerializeField]
@@ -51,25 +54,29 @@ public class Gun : Interactable
 
         if (shakeTimerStart > 0)
         {
+            GameManager.instance.readySwap = false;
             shakeTimerStart -= Time.deltaTime;
             if (shakeTimerStart <= 0f)
             {
                 ShakeCamera(0f, 0f);
+                GameManager.instance.readySwap = true;
             }
         }
     }
 
-    public void Shoot()
+    public void Shoot(Player thePlayer)
     {
         RaycastHit hitInfo;
         if (currentCooldown <= 0f)
         {
-            gunAudioSource.PlayOneShot(gunShot);
+            //gunAudioSource.PlayOneShot(gunShot);
+            GameObject currentAudio = Instantiate(gunAudio);
+            Destroy(currentAudio,2f);
             muzzleFlash.GetComponent<ParticleSystem>().Play();
             currentCooldown = fireCooldown;
             ShakeCamera(shakeIntensity, shakeFrequency);
             shakeTimerStart = shakeTimer;
-            if (Physics.Raycast(GameManager.instance.playerCamera.position, GameManager.instance.playerCamera.forward, out hitInfo, bulletRange))
+            if (Physics.Raycast(thePlayer.playerCamera.position, thePlayer.playerCamera.forward, out hitInfo, bulletRange))
             {
                 if (hitInfo.transform.TryGetComponent<Enemy>(out Enemy enemy))
                 {
@@ -97,7 +104,7 @@ public class Gun : Interactable
         {
             GameManager.instance.currentEquippable.SetActive(false);
         }
-        gameObject.transform.SetParent(GameManager.instance.playerCamera.transform, false);
+        gameObject.transform.SetParent(thePlayer.playerCamera.transform, false);
 
         gameObject.GetComponent<BoxCollider>().enabled = false;
         gameObject.GetComponent<Rigidbody>().isKinematic = true;

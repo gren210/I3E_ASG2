@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 3056855671888321833}
   - component: {fileID: 4651591405078185165}
   - component: {fileID: 2920353386860326243}
+  - component: {fileID: 8627214195624753359}
   m_Layer: 0
   m_Name: PickableGun
   m_TagString: Untagged
@@ -87,12 +88,16 @@ MonoBehaviour:
   bulletRange: 10000
   gunShot: {fileID: 8300000, guid: 5fdbb988973d8f640a312a8c8067b9e4, type: 3}
   gunAudioSource: {fileID: 2920353386860326243}
+  gunAudio: {fileID: 3457640555307705561, guid: fc86614cc845e8d4e86b087f6c79d29c,
+    type: 3}
   swapThrowForce: 150
   shakeTimer: 0.08
   shakeIntensity: 1
   shakeFrequency: 1
   gunMuzzle: {fileID: 2935123212458554942}
   muzzleFlash: {fileID: 2592132703005360161}
+  playerCamera: {fileID: 9005220659476430818, guid: 2d3a85ecde41a8246a79669975912b74,
+    type: 3}
 --- !u!54 &3056855671888321833
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -237,6 +242,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &8627214195624753359
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3248005976916762292}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 64848eb77cd40d648868065162d063b9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3762580041125882640
 GameObject:
   m_ObjectHideFlags: 0

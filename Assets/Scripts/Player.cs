@@ -9,21 +9,19 @@ public class Player : MonoBehaviour
 
     Interactable currentInteractable;
 
-    Collectible currentCollectible;
-
     GiftBox currentGiftBox;
 
     Gun currentGunPickup;
 
     Grenade currentGrenadePickup;
 
-    public GameObject currentGun;
+    //public GameObject currentGun;
 
-    [SerializeField]
-    GameObject equippedGun;
+    //[SerializeField]
+    //GameObject equippedGun;
 
-    [SerializeField]
-    GameObject equippedGrenade;
+    //[SerializeField]
+    //GameObject equippedGrenade;
 
     [SerializeField]
     GameObject flashlight;
@@ -32,8 +30,7 @@ public class Player : MonoBehaviour
 
     public TextMeshProUGUI jumpText;
 
-    [SerializeField]
-    Transform playerCamera;
+    public Transform playerCamera;
 
     [SerializeField]
     float interactionDistance;
@@ -45,8 +42,6 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hitInfo, interactionDistance))
         {
             //Debug.Log(hitInfo.transform.name);
-
-            hitInfo.transform.TryGetComponent<Collectible>(out currentCollectible);
             hitInfo.transform.TryGetComponent<GiftBox>(out currentGiftBox);
             hitInfo.transform.TryGetComponent<Gun>(out currentGunPickup);
             hitInfo.transform.TryGetComponent<Grenade>(out currentGrenadePickup);
@@ -75,10 +70,6 @@ public class Player : MonoBehaviour
         {
             currentInteractable.Interact(this);
         }
-        if (currentCollectible != null)
-        {
-            currentCollectible.Interact(this);
-        }
         if (currentGiftBox != null)
         {
             currentGiftBox.Interact(this);
@@ -102,7 +93,7 @@ public class Player : MonoBehaviour
         {
             if (GameManager.instance.currentEquippable == GameManager.instance.currentPrimary)
             {
-                GameManager.instance.currentPrimary.GetComponent<Gun>().Shoot();
+                GameManager.instance.currentPrimary.GetComponent<Gun>().Shoot(this);
             }
             else if (GameManager.instance.currentEquippable == GameManager.instance.currentGrenade)
             {
@@ -113,26 +104,24 @@ public class Player : MonoBehaviour
 
     void OnEquipGun()
     {
-        if (GameManager.instance.currentEquippable != null)
+        if (GameManager.instance.readySwap == true && GameManager.instance.currentEquippable != null)
         {
             GameManager.instance.currentEquippable.SetActive(false);
         }
         GameManager.instance.currentEquippable = GameManager.instance.currentPrimary;
-        Debug.Log(GameManager.instance.currentPrimary);
         GameManager.instance.currentEquippable.SetActive(true);
 
     }
 
     void OnEquipGrenade()
     {
-        if(GameManager.instance.grenadeCount > 0)
+        if(GameManager.instance.readySwap == true && GameManager.instance.grenadeCount > 0)
         {
             if (GameManager.instance.currentEquippable != null)
             {
                 GameManager.instance.currentEquippable.SetActive(false);
             }
             GameManager.instance.currentEquippable = GameManager.instance.currentGrenade;
-            Debug.Log(GameManager.instance.currentGrenade);
             GameManager.instance.currentEquippable.SetActive(true);
         }
     }

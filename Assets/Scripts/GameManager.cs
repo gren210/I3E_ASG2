@@ -8,22 +8,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    //[SerializeField]
-    //TextMeshProUGUI scoreText;
-
     public TextMeshProUGUI healthText;
 
-    private int currentScore = 0;
-
     public float playerHealth = 100;
-
-    [HideInInspector]
-    public GameObject currentGrenade = null;
-
-    [HideInInspector]
-    public GameObject currentPrimary = null;
-
-    public bool isPrimary = false;
 
     public int grenadeCount = 0;
 
@@ -38,6 +25,17 @@ public class GameManager : MonoBehaviour
     public CinemachineVirtualCamera virtualCamera;
 
     public GameObject equipParent;
+
+    public bool isPrimary = false;
+
+    [HideInInspector]
+    public bool readySwap = true;
+
+    [HideInInspector]
+    public GameObject currentGrenade = null;
+
+    [HideInInspector]
+    public GameObject currentPrimary = null;
 
     private void Awake()
     {
@@ -55,6 +53,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         //scoreText.text = "Score: 0";
+
+        Application.targetFrameRate = 240;
     }
 
     private void Update()
@@ -63,9 +63,9 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void IncreaseScore(int scoreToAdd)
-    {
-        currentScore += scoreToAdd;
+    //public void IncreaseScore(int scoreToAdd)
+    //{
+        //currentScore += scoreToAdd;
         //scoreText.text = "Score: " + currentScore;
-    }
+    //}
 }
