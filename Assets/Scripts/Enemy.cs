@@ -25,11 +25,15 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     float damageTimer = 1f;
 
+    private GameObject playerObject;
+
     private float currentTimer;
+
+    private Player currentPlayer;
 
     private void Awake()
     {
-        playerTarget = GameManager.instance.player;
+        //playerTarget = GameManager.instance.playerObject;
     }
 
     private void Start()
@@ -41,22 +45,32 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playerTarget = GameManager.instance.playerObject;
+        Debug.DrawLine(gameObject.transform.position, playerTarget.transform.position, Color.red);
+        Vector3 targetRay = playerTarget.transform.position - gameObject.transform.position;
+        targetRay.y += 0.5f;
+        RaycastHit hitInfo;
+        Physics.Raycast(gameObject.transform.position, targetRay, out hitInfo, hostileDistance, 01000000);
+
         //Debug.Log(Vector3.Distance(playerTarget.transform.position, transform.position));
-        if (Vector3.Distance(playerTarget.transform.position, transform.position) <= hostileDistance)
+        if(hitInfo.collider != null)
         {
-            if (Vector3.Distance(playerTarget.transform.position, transform.position) <= damageDistance)
+            if (hitInfo.transform.TryGetComponent<Player>(out currentPlayer))// && Vector3.Distance(playerTarget.transform.position, transform.position) <= hostileDistance)
             {
-                if (currentTimer >= damageTimer)
+                if (Vector3.Distance(playerTarget.transform.position, transform.position) <= damageDistance)
                 {
-                    GameManager.instance.playerHealth -= enemyDamage;
-                    currentTimer = 0;
+                    if (currentTimer >= damageTimer)
+                    {
+                        GameManager.instance.playerHealth -= enemyDamage;
+                        currentTimer = 0;
+                    }
+                    currentTimer += Time.deltaTime;
                 }
-                currentTimer += Time.deltaTime;
-            }
-            else
-            {
-                transform.position = Vector3.MoveTowards(transform.position, playerTarget.transform.position, enemySpeed * Time.deltaTime);
-                transform.LookAt(playerTarget.transform);
+                else
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, playerTarget.transform.position, enemySpeed * Time.deltaTime);
+                    transform.LookAt(playerTarget.transform);
+                }
             }
         }
 

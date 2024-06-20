@@ -64,6 +64,11 @@ public class Gun : Interactable
         }
     }
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     public void Shoot(Player thePlayer)
     {
         RaycastHit hitInfo;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Cinemachine;
 
 public class Player : MonoBehaviour
 {
@@ -37,12 +38,43 @@ public class Player : MonoBehaviour
     [SerializeField]
     float interactionDistance;
 
+    [SerializeField]
+    CinemachineVirtualCamera virtualCamera;
+
+    [SerializeField]
+    GameObject equipPosition;
+
+    private GameObject playerObject;
+
     private void Awake()
     {
-        DontDestroyOnLoad(playerController);
+        //playerObject = gameObject;    
     }
+
+    private void Start()
+    {
+        GameManager.instance.playerObject = gameObject;
+        GameManager.instance.playerCamera = playerCamera;
+        GameManager.instance.virtualCamera = virtualCamera;
+        GameManager.instance.equipPosition = equipPosition;
+        if (GameManager.instance.currentPrimary != null )
+        {
+            GameManager.instance.currentPrimary.transform.SetParent(playerCamera, false);
+        }
+        if (GameManager.instance.currentGrenade != null)
+        {
+            GameManager.instance.currentGrenade.transform.SetParent(playerCamera, false);
+        }
+        interactionText = GameManager.instance.interactionText;
+        jumpText = GameManager.instance.jumpText;
+
+
+
+    }
+
     private void Update()
     {
+        //Debug.Log(GameManager.instance.playerObject);
         Debug.DrawLine(playerCamera.position, playerCamera.position + (playerCamera.forward * interactionDistance), Color.red);
         RaycastHit hitInfo;
         if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hitInfo, interactionDistance))

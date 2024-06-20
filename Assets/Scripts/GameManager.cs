@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public GameObject player;
+    public GameObject playerObject;
 
     public TextMeshProUGUI healthText;
 
@@ -40,6 +40,9 @@ public class GameManager : MonoBehaviour
     public GameObject currentPrimary = null;
 
     public GameObject UI;
+
+    public TextMeshProUGUI interactionText;
+    public TextMeshProUGUI jumpText;
 
     private void Awake()
     {
