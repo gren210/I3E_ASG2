@@ -38,6 +38,10 @@ public class Grenade : Interactable
     [SerializeField]
     float shakeFrequency;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
     private void GrenadeExplode()
     {
         //Instantiate(effect, transform.position, transform.rotation);
@@ -51,11 +55,11 @@ public class Grenade : Interactable
         { 
             if (collider.gameObject.tag == "Enemy")
             {
+                Debug.Log("ok");
                 collider.gameObject.GetComponent<Enemy>().enemyHealth -= explodeDamage;
             }
             else if (collider.gameObject.tag == "Player")
             {
-                Debug.Log("ok");
                 GameManager.instance.playerHealth -= explodeDamage;
             }
         }
@@ -82,7 +86,6 @@ public class Grenade : Interactable
                 GameManager.instance.currentGrenade = null;
                 GameManager.instance.currentEquippable = null;
                 set = false;
-                Debug.Log(GameManager.instance.grenadeCount);
             }
             timer -= Time.deltaTime;
             if (timer < 0)
@@ -128,7 +131,6 @@ public class Grenade : Interactable
         GameManager.instance.currentEquippable.SetActive(true);
         gameObject.transform.position = GameManager.instance.equipPosition.transform.position;
         gameObject.transform.eulerAngles = GameManager.instance.equipPosition.transform.eulerAngles;
-        Debug.Log("negga");
     }
 
     //public override void ShakeCamera(float shakeIntensity, float shakeFrequency)

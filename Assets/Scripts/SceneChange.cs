@@ -52,6 +52,7 @@ public class SceneChange : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         ChangeLocation2(player, targetObject); //, targetObject);
+        PersistItems();
         SceneManager.LoadScene(sceneIndex);
         timer = Time.deltaTime;
     }
@@ -65,4 +66,9 @@ public class SceneChange : MonoBehaviour
         player.rotation = currentRotation;
     }
 
+    private void PersistItems()
+    {
+        GameManager.instance.currentPrimary.transform.SetParent(GameManager.instance.gameObject.transform, false);
+        GameManager.instance.currentGrenade.transform.SetParent(GameManager.instance.gameObject.transform, false);
+    }
 }
