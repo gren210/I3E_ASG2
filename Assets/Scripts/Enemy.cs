@@ -27,6 +27,11 @@ public class Enemy : MonoBehaviour
 
     private float currentTimer;
 
+    private void Awake()
+    {
+        playerTarget = GameManager.instance.player;
+    }
+
     private void Start()
     {
         currentTimer = 5;

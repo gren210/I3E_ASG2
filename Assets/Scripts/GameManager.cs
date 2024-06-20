@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    public GameObject player;
+
     public TextMeshProUGUI healthText;
 
     public float playerHealth = 100;
@@ -24,7 +26,7 @@ public class GameManager : MonoBehaviour
 
     public CinemachineVirtualCamera virtualCamera;
 
-    public GameObject equipParent;
+    //public GameObject equipParent;
 
     public bool isPrimary = false;
 
@@ -37,12 +39,16 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public GameObject currentPrimary = null;
 
+    public GameObject UI;
+
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(UI);
+
         }
         else if(instance != null && instance != this)
         {

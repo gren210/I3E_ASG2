@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject flashlight;
 
+    public GameObject playerController;
+
     public TextMeshProUGUI interactionText;
 
     public TextMeshProUGUI jumpText;
@@ -35,6 +37,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     float interactionDistance;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(playerController);
+    }
     private void Update()
     {
         Debug.DrawLine(playerCamera.position, playerCamera.position + (playerCamera.forward * interactionDistance), Color.red);
