@@ -51,7 +51,7 @@ public class SceneChange : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        ChangeLocation2(player, targetObject); //, targetObject);
+        //ChangeLocation2(player, targetObject); //, targetObject);
         PersistItems();
         SceneManager.LoadScene(sceneIndex);
         timer = Time.deltaTime;

@@ -38,6 +38,9 @@ public class Grenade : Interactable
     [SerializeField]
     float shakeFrequency;
 
+    [SerializeField]
+    float swapThrowForce;
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -118,7 +121,18 @@ public class Grenade : Interactable
     public override void Interact(Player thePlayer)
     {
         base.Interact(thePlayer);
-        if(GameManager.instance.currentEquippable != null)
+        if (GameManager.instance.currentGrenade != null)
+        {
+            if (GameManager.instance.currentGrenade.activeSelf == false)
+            {
+                GameManager.instance.currentGrenade.SetActive(true);
+            }
+            GameManager.instance.currentGrenade.transform.parent = null;
+            GameManager.instance.currentGrenade.GetComponent<SphereCollider>().enabled = true;
+            GameManager.instance.currentGrenade.GetComponent<Rigidbody>().isKinematic = false;
+            GameManager.instance.currentGrenade.GetComponent<Rigidbody>().AddForce(swapThrowForce * GameManager.instance.playerCamera.transform.forward);
+        }
+        if (GameManager.instance.currentEquippable != null && GameManager.instance.currentEquippable != GameManager.instance.currentGrenade)
         {
             GameManager.instance.currentEquippable.SetActive(false);
         }

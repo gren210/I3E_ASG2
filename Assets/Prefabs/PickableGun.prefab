@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireCooldown: 0.1
-  damage: 500
+  damage: 18
   bulletRange: 10000
   gunShot: {fileID: 8300000, guid: 5fdbb988973d8f640a312a8c8067b9e4, type: 3}
   gunAudioSource: {fileID: 2920353386860326243}
