@@ -36,6 +36,10 @@ public class Enemy : MonoBehaviour
 
     bool detected;
 
+    public Animator animator;
+
+    bool isAttacking = false;
+
 
 
     private void Awake()
@@ -45,7 +49,8 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        currentTimer = 5;
+        animator = gameObject.GetComponent<Animator>();
+        currentTimer = 1;
     }
 
 
@@ -68,12 +73,23 @@ public class Enemy : MonoBehaviour
             {
                 if (currentTimer >= damageTimer)
                 {
+                    if (!isAttacking)
+                    {
+                        animator.SetTrigger("Attack");
+                        isAttacking = true;
+                    }
                     GameManager.instance.playerHealth -= enemyDamage;
                     currentTimer = 0;
                 }
                 currentTimer += Time.deltaTime;
+
+            }
+            else
+            {
+
             }
         }
+
         if (detected)
         {
             enemy.SetDestination(playerTarget.transform.position);
