@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2529531107675160378}
   - component: {fileID: 2626835140957047525}
   - component: {fileID: 5960292989472439654}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tunnel_twoway_I3E
   m_TagString: Untagged
   m_Icon: {fileID: 0}

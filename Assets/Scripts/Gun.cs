@@ -18,6 +18,8 @@ public class Gun : Interactable
 
     public AudioSource gunAudioSource;
 
+    public AudioClip hitSound;
+
     [SerializeField]
     GameObject gunAudio;
 
@@ -40,6 +42,12 @@ public class Gun : Interactable
 
     [SerializeField]
     ParticleSystem muzzleFlash;
+
+    [SerializeField]
+    GameObject bullet;
+
+    [SerializeField]
+    float bulletSpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -74,6 +82,7 @@ public class Gun : Interactable
         RaycastHit hitInfo;
         if (currentCooldown <= 0f)
         {
+            bool hit = Physics.Raycast(thePlayer.playerCamera.position, thePlayer.playerCamera.forward, out hitInfo, bulletRange);
             //gunAudioSource.PlayOneShot(gunShot);
             GameObject currentAudio = Instantiate(gunAudio);
             Destroy(currentAudio,2f);
@@ -81,12 +90,15 @@ public class Gun : Interactable
             currentCooldown = fireCooldown;
             ShakeCamera(shakeIntensity, shakeFrequency);
             shakeTimerStart = shakeTimer;
-            if (Physics.Raycast(thePlayer.playerCamera.position, thePlayer.playerCamera.forward, out hitInfo, bulletRange))
+            //GameObject newBullet = Instantiate(bullet, gunMuzzle.transform.position, gunMuzzle.transform.rotation);
+            //newBullet.GetComponent<Rigidbody>().velocity = ((hitInfo.point - gunMuzzle.transform.position) * bulletSpeed);
+            if (hit)
             {
                 if (hitInfo.transform.TryGetComponent<Enemy>(out Enemy enemy))
                 {
-                    Debug.Log("Gun is shot");
+                    Debug.Log("Enemy is shot");
                     enemy.enemyHealth -= damage;
+                    AudioSource.PlayClipAtPoint(hitSound, hitInfo.point);
                 }
             }
         }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5369074303372721628}
   - component: {fileID: 584923692852998014}
   - component: {fileID: 4156106373131412941}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: lamp4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 8968304327623143645}
   - component: {fileID: 8887057831181736096}
   - component: {fileID: 6331461440016632092}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: NEWroofArch1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 6582873836436398915}
   - component: {fileID: 7910497644352258983}
   - component: {fileID: 3166464099094474580}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pillar10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,7 +330,7 @@ GameObject:
   - component: {fileID: 6926989018729010639}
   - component: {fileID: 7073831220957454971}
   - component: {fileID: 3039849005320306615}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pillar11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -436,7 +436,7 @@ GameObject:
   - component: {fileID: 7579117848691487096}
   - component: {fileID: 6603063417072003365}
   - component: {fileID: 7042543000605966645}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -542,7 +542,7 @@ GameObject:
   - component: {fileID: 8470402206817735383}
   - component: {fileID: 778458355038882897}
   - component: {fileID: 5644793386325917274}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: lamp3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -648,7 +648,7 @@ GameObject:
   - component: {fileID: 7675140556758707884}
   - component: {fileID: 2825971183705946592}
   - component: {fileID: 5773817347994784367}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: crystal2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -754,7 +754,7 @@ GameObject:
   - component: {fileID: 222608941251501665}
   - component: {fileID: 7963807399663603123}
   - component: {fileID: 8781327008712523567}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: arch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -860,7 +860,7 @@ GameObject:
   - component: {fileID: 5612109507578008089}
   - component: {fileID: 2317189183917855545}
   - component: {fileID: 8416556089574792945}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: crystal3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -963,7 +963,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9138035948607594553}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tunnel_stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}

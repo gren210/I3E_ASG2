@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8453249276463352437}
   - component: {fileID: 6886338007138823641}
   - component: {fileID: 1497996522352962984}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: soloWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}

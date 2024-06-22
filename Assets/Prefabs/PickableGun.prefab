@@ -24,14 +24,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2935123212458554942}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.018, z: 0.1919}
+  m_LocalRotation: {x: -0.5, y: -0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: 0, y: 0.017999649, z: 0.19189453}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2393127383288934767}
   m_Father: {fileID: 2908586590562500692}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 90}
 --- !u!1 &3248005976916762292
 GameObject:
   m_ObjectHideFlags: 0
@@ -85,17 +85,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireCooldown: 0.1
   damage: 18
-  bulletRange: 10000
+  bulletRange: 10000000
   gunShot: {fileID: 8300000, guid: 5fdbb988973d8f640a312a8c8067b9e4, type: 3}
   gunAudioSource: {fileID: 2920353386860326243}
+  hitSound: {fileID: 8300000, guid: d4c949f87208dda49aeeb8abafb92ef3, type: 3}
   gunAudio: {fileID: 3457640555307705561, guid: fc86614cc845e8d4e86b087f6c79d29c,
     type: 3}
   swapThrowForce: 150
   shakeTimer: 0.08
-  shakeIntensity: 1
-  shakeFrequency: 1
+  shakeIntensity: 0
+  shakeFrequency: 0
   gunMuzzle: {fileID: 2935123212458554942}
   muzzleFlash: {fileID: 2592132703005360161}
+  bullet: {fileID: 5806001557802438499, guid: 4e69ae6eb3ffb5c4caedca589a27fc7f, type: 3}
+  bulletSpeed: 60
 --- !u!54 &3056855671888321833
 Rigidbody:
   m_ObjectHideFlags: 0

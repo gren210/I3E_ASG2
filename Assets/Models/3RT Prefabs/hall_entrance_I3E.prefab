@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6583363550413019869}
   - component: {fileID: 4905569686867839129}
   - component: {fileID: 1422396302709732606}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: wall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,7 +115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5047400899892432383}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: hall_entrance_I3E
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +153,7 @@ GameObject:
   - component: {fileID: 7597859360132123956}
   - component: {fileID: 1696878892278882036}
   - component: {fileID: 5769941982141636722}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: OGpillar2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -259,7 +259,7 @@ GameObject:
   - component: {fileID: 2238777411547950580}
   - component: {fileID: 1108884647434868911}
   - component: {fileID: 2404810934589511519}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: arch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,7 +365,7 @@ GameObject:
   - component: {fileID: 3814628931647976235}
   - component: {fileID: 3670520579698756839}
   - component: {fileID: 3149170337617686666}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: OGpillar5
   m_TagString: Untagged
   m_Icon: {fileID: 0}

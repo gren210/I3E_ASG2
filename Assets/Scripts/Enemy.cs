@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
@@ -31,6 +32,12 @@ public class Enemy : MonoBehaviour
 
     private Player currentPlayer;
 
+    public NavMeshAgent enemy;
+
+    bool detected;
+
+
+
     private void Awake()
     {
         //playerTarget = GameManager.instance.playerObject;
@@ -48,33 +55,33 @@ public class Enemy : MonoBehaviour
         playerTarget = GameManager.instance.playerObject;
         Debug.DrawLine(gameObject.transform.position, playerTarget.transform.position, Color.red);
         Vector3 targetRay = playerTarget.transform.position - gameObject.transform.position;
-        targetRay.y += 0.5f;
-        RaycastHit hitInfo;
-        Physics.Raycast(gameObject.transform.position, targetRay, out hitInfo, hostileDistance, 01000000);
+        //targetRay.y += 0.5f;
+        NavMeshHit hitInfo;
+        bool obstacle = enemy.Raycast(playerTarget.transform.position, out hitInfo);
+        Debug.Log(hitInfo);
 
         //Debug.Log(Vector3.Distance(playerTarget.transform.position, transform.position));
-        if(hitInfo.collider != null)
+        if (!obstacle)// && Vector3.Distance(playerTarget.transform.position, transform.position) <= hostileDistance)
         {
-            if (hitInfo.transform.TryGetComponent<Player>(out currentPlayer))// && Vector3.Distance(playerTarget.transform.position, transform.position) <= hostileDistance)
+            detected = true;
+            if (Vector3.Distance(playerTarget.transform.position, transform.position) <= damageDistance)
             {
-                if (Vector3.Distance(playerTarget.transform.position, transform.position) <= damageDistance)
+                if (currentTimer >= damageTimer)
                 {
-                    if (currentTimer >= damageTimer)
-                    {
-                        GameManager.instance.playerHealth -= enemyDamage;
-                        currentTimer = 0;
-                    }
-                    currentTimer += Time.deltaTime;
+                    GameManager.instance.playerHealth -= enemyDamage;
+                    currentTimer = 0;
                 }
-                else
-                {
-                    transform.position = Vector3.MoveTowards(transform.position, playerTarget.transform.position, enemySpeed * Time.deltaTime);
-                    transform.LookAt(playerTarget.transform);
-                }
+                currentTimer += Time.deltaTime;
             }
         }
+        if (detected)
+        {
+            enemy.SetDestination(playerTarget.transform.position);
+            //transform.position = Vector3.MoveTowards(transform.position, playerTarget.transform.position, enemySpeed * Time.deltaTime);
+            //transform.LookAt(playerTarget.transform);
+        }
 
-        if(enemyHealth <= 0) 
+        if (enemyHealth <= 0) 
         {
             Destroy(gameObject);
         }

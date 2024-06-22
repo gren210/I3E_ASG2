@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 748847568832707494}
   - component: {fileID: 9092480498267858012}
   - component: {fileID: 8909955886743125109}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: longPillar3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 637198579444871615}
   - component: {fileID: 3993542675714231866}
   - component: {fileID: 1435478643420397555}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: hall_wall_I3E
   m_TagString: Untagged
   m_Icon: {fileID: 0}

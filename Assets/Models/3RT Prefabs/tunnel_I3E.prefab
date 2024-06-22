@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8118961449660337130}
   - component: {fileID: 7693795297136347034}
   - component: {fileID: 4512419095152041568}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: roofArch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 5958129298877850733}
   - component: {fileID: 5315003135310077710}
   - component: {fileID: 3028590698636163920}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pillar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 8723422426784215803}
   - component: {fileID: 2176363061135839901}
   - component: {fileID: 6832813632694081287}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: roof
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,7 +327,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3122170496832764909}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tunnel_I3E
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,7 +365,7 @@ GameObject:
   - component: {fileID: 7018672159255113454}
   - component: {fileID: 4218483469693278810}
   - component: {fileID: 2808397571950313689}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pillar1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

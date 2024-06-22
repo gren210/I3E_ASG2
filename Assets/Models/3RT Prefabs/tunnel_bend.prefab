@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 682279623859925676}
   - component: {fileID: 1080731208071396562}
   - component: {fileID: 8938156866367489647}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: OGpillar9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 407187281826854088}
   - component: {fileID: 737493864592151801}
   - component: {fileID: 2191348983051859387}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: OGpillar6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 6670709188929400510}
   - component: {fileID: 4854506481217432372}
   - component: {fileID: 6983349407475921460}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: NEWroofArch3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,7 +330,7 @@ GameObject:
   - component: {fileID: 7140672102385593403}
   - component: {fileID: 322451654329998149}
   - component: {fileID: 2068793032193441300}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -436,7 +436,7 @@ GameObject:
   - component: {fileID: 643805236452158058}
   - component: {fileID: 4628244025196665660}
   - component: {fileID: 3260022717320971668}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: arch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -542,7 +542,7 @@ GameObject:
   - component: {fileID: 2247544924697088184}
   - component: {fileID: 8528429490642908090}
   - component: {fileID: 3532297395550446540}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: OGpillar8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -645,7 +645,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8910483861855926213}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tunnel_bend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -687,7 +687,7 @@ GameObject:
   - component: {fileID: 910796468998639641}
   - component: {fileID: 5499676393458446105}
   - component: {fileID: 136434772349138510}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: NEWroofArch4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -793,7 +793,7 @@ GameObject:
   - component: {fileID: 1342482811144359042}
   - component: {fileID: 2512032465675419517}
   - component: {fileID: 5027302080930276221}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: OGpillar7
   m_TagString: Untagged
   m_Icon: {fileID: 0}

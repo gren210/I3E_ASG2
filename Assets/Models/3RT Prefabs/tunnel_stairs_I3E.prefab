@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1643349516950642239}
   - component: {fileID: 6523392863415112652}
   - component: {fileID: 6217825209536453893}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pillar11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,7 +115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 88587169778804658}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tunnel_stairs_I3E
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 2202453857545303110}
   - component: {fileID: 5151498933615425900}
   - component: {fileID: 7311663229000460570}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: NEWroofArch1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 4409981463717397409}
   - component: {fileID: 1519478387368149838}
   - component: {fileID: 6076779217547312224}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -366,7 +366,7 @@ GameObject:
   - component: {fileID: 1252716762905117572}
   - component: {fileID: 7925150259934495265}
   - component: {fileID: 1675378264607960552}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pillar10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -472,7 +472,7 @@ GameObject:
   - component: {fileID: 5271502275484177022}
   - component: {fileID: 891274855502259507}
   - component: {fileID: 5748886178359306272}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: arch
   m_TagString: Untagged
   m_Icon: {fileID: 0}

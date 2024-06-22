@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4026392883756436082}
   - component: {fileID: 2944896333387068363}
   - component: {fileID: 8666776330621002567}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: hall_torch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
