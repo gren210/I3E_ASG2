@@ -2072,7 +2072,7 @@ MonoBehaviour:
   enemySpeed: 5
   enemyHealth: 100
   enemyDamage: 5
-  damageDistance: 2
+  damageDistance: 2.5
   damageTimer: 1
   enemy: {fileID: -1533515381171953366}
   animator: {fileID: 7972597039229323839}

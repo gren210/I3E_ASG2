@@ -18,4 +18,9 @@ public class Interactable : MonoBehaviour
         cinemachineComponent.m_FrequencyGain = shakeFrequency;
     }
 
+    public virtual void PositiveLerp(float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
+    {
+
+    }
+
 }

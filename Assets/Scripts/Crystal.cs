@@ -5,7 +5,7 @@ using UnityEngine;
 public class Crystal : Interactable
 {
     [SerializeField]
-    StagedDoor door;
+    Door door;
 
     // Start is called before the first frame update
     void Start()

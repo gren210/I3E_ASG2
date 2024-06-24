@@ -40,13 +40,18 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public GameObject currentPrimary = null;
 
+    [HideInInspector]
+    public bool haveCrystal;
+
+    public int healCount;
+
+    public int healAmount;
+
     public GameObject UI;
 
     public TextMeshProUGUI interactionText;
 
     public TextMeshProUGUI jumpText;
-
-    public bool isTutorial;
 
     private void Awake()
     {
@@ -73,11 +78,6 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         healthText.text = "Health: " + playerHealth;
-
-        if(SceneManager.GetActiveScene().buildIndex >= 1)
-        {
-            isTutorial = false;
-        }
 
     }
 

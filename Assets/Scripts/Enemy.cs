@@ -26,11 +26,11 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     float damageTimer = 1f;
 
-    private GameObject playerObject;
+    //private GameObject playerObject;
 
     private float currentTimer;
 
-    private Player currentPlayer;
+    //private Player currentPlayer;
 
     public NavMeshAgent enemy;
 
@@ -58,7 +58,7 @@ public class Enemy : MonoBehaviour
     {
         playerTarget = GameManager.instance.playerObject;
         Debug.DrawLine(gameObject.transform.position, playerTarget.transform.position, Color.red);
-        Vector3 targetRay = playerTarget.transform.position - gameObject.transform.position;
+        //Vector3 targetRay = playerTarget.transform.position - gameObject.transform.position;
         //targetRay.y += 0.5f;
         NavMeshHit hitInfo;
         bool obstacle = enemy.Raycast(playerTarget.transform.position, out hitInfo);

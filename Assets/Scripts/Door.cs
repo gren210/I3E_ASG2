@@ -1,21 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class Door : Interactable
 {
-    bool opened;
+    [HideInInspector]
+    public bool opened;
 
     public bool locked;
+
+    public bool isInteractable;
 
     public float openDuration;
 
     float currentDuration;
 
-    bool opening = false;
+    [HideInInspector]
+    public bool opening = false;
 
-    bool closing = false;
+    [HideInInspector]
+    public bool closing = false;
 
     public float rotationX;
 
@@ -46,6 +52,15 @@ public class Door : Interactable
     // Update is called once per frame
     void Update()
     {
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            if (GameManager.instance.currentPrimary != null && GameManager.instance.currentGrenade != null && GameManager.instance.healCount > 0)
+            {
+                Debug.Log(GameManager.instance.currentPrimary);
+                locked = false;
+            }
+        }
+
         if (opening)
         {
             currentDuration += Time.deltaTime;
@@ -92,12 +107,6 @@ public class Door : Interactable
             }
 
         }
-
-        if (gameObject.name == "DoorHinge")
-        {
-            locked = false;
-        }
-
     }
 
     public void OpenDoor()
@@ -142,16 +151,21 @@ public class Door : Interactable
 
     public override void Interact(Player thePlayer)
     {
-        base.Interact(thePlayer); 
-        if (opened)
+        if (isInteractable && !locked)
         {
-            CloseDoor();
-        }
-        else
-        {
-            OpenDoor();
+            base.Interact(thePlayer);
+            if (opened)
+            {
+                CloseDoor();
+            }
+            else
+            {
+                OpenDoor();
+            }
         }
 
     }
+
+    
 
 }

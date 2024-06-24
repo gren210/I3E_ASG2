@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemySpawn : MonoBehaviour
 {
     [SerializeField]
-    GameObject enemy;
+    GameObject enemyAsset;
 
     public bool startSpawning;
 
@@ -41,7 +41,7 @@ public class EnemySpawn : MonoBehaviour
 
     public void SpawnEnemy()
     {
-        Instantiate(enemy, gameObject.transform.position);
+        Instantiate(enemyAsset, gameObject.transform.position, gameObject.transform.rotation);
     }
 
 }

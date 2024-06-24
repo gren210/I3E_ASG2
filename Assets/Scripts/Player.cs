@@ -18,6 +18,12 @@ public class Player : MonoBehaviour
 
     Crystal currentCrystal;
 
+    Door currentDoor;
+
+    Key currentKey;
+
+    Lever currentLever;
+
     //public GameObject currentGun;
 
     //[SerializeField]
@@ -47,6 +53,9 @@ public class Player : MonoBehaviour
     GameObject equipPosition;
 
     private GameObject playerObject;
+
+    [SerializeField]
+    bool inSpaceship;
 
     private void Awake()
     {
@@ -86,6 +95,9 @@ public class Player : MonoBehaviour
             hitInfo.transform.TryGetComponent<Gun>(out currentGunPickup);
             hitInfo.transform.TryGetComponent<Grenade>(out currentGrenadePickup);
             hitInfo.transform.TryGetComponent<Crystal>(out currentCrystal);
+            hitInfo.transform.TryGetComponent<Door>(out currentDoor);
+            hitInfo.transform.TryGetComponent<Key>(out currentKey);
+            hitInfo.transform.TryGetComponent<Lever>(out currentLever);
 
             if (hitInfo.transform.TryGetComponent<Interactable>(out currentInteractable))
             {
@@ -130,11 +142,20 @@ public class Player : MonoBehaviour
         {
             currentCrystal.Interact(this);
         }
+        if (currentKey != null)
+        {
+            currentKey.Interact(this);
+        }
+        if (currentLever != null)
+        {
+            currentLever.Interact(this);
+        }
+
     }
 
     void OnFire()
     {
-        if (!GameManager.instance.isTutorial)
+        if (!inSpaceship)
         {
             if (GameManager.instance.currentEquippable != null)
             {
@@ -186,6 +207,15 @@ public class Player : MonoBehaviour
         }
     }
 
+    void OnHeal()
+    {
+        if (GameManager.instance.healCount > 0)
+        {
+            GameManager.instance.healCount--;
+            GameManager.instance.playerHealth += GameManager.instance.healAmount;
+
+        }
+    }
 
     //void OnAutoFire()
     //{
