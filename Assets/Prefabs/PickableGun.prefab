@@ -93,8 +93,8 @@ MonoBehaviour:
     type: 3}
   swapThrowForce: 150
   shakeTimer: 0.08
-  shakeIntensity: 0
-  shakeFrequency: 0
+  shakeIntensity: 1
+  shakeFrequency: 1
   gunMuzzle: {fileID: 2935123212458554942}
   muzzleFlash: {fileID: 2592132703005360161}
   bullet: {fileID: 5806001557802438499, guid: 4e69ae6eb3ffb5c4caedca589a27fc7f, type: 3}

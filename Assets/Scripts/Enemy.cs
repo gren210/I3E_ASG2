@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     GameObject playerTarget;
 
     [SerializeField]
-    float hostileDistance;
+    float spawnDistance;
 
     [SerializeField]
     float enemySpeed;
@@ -38,10 +38,6 @@ public class Enemy : MonoBehaviour
 
     public Animator animator;
 
-    bool isAttacking = false;
-
-
-
     private void Awake()
     {
         //playerTarget = GameManager.instance.playerObject;
@@ -51,6 +47,9 @@ public class Enemy : MonoBehaviour
     {
         animator = gameObject.GetComponent<Animator>();
         currentTimer = 1;
+        enemy.speed = enemySpeed;
+        playerTarget = GameManager.instance.playerObject;
+
     }
 
 
@@ -69,32 +68,30 @@ public class Enemy : MonoBehaviour
         if (!obstacle)// && Vector3.Distance(playerTarget.transform.position, transform.position) <= hostileDistance)
         {
             detected = true;
-            if (Vector3.Distance(playerTarget.transform.position, transform.position) <= damageDistance)
-            {
-                if (currentTimer >= damageTimer)
-                {
-                    if (!isAttacking)
-                    {
-                        animator.SetTrigger("Attack");
-                        isAttacking = true;
-                    }
-                    GameManager.instance.playerHealth -= enemyDamage;
-                    currentTimer = 0;
-                }
-                currentTimer += Time.deltaTime;
-
-            }
-            else
-            {
-
-            }
         }
 
         if (detected)
         {
-            enemy.SetDestination(playerTarget.transform.position);
-            //transform.position = Vector3.MoveTowards(transform.position, playerTarget.transform.position, enemySpeed * Time.deltaTime);
-            //transform.LookAt(playerTarget.transform);
+            currentTimer += Time.deltaTime;
+            if (Vector3.Distance(playerTarget.transform.position, transform.position) <= damageDistance)
+            {
+                enemy.isStopped = true;
+                animator.SetBool("Run", false);
+                animator.SetBool("Attack", true);
+                if (currentTimer >= damageTimer)
+                {
+                    GameManager.instance.playerHealth -= enemyDamage;
+                    currentTimer = 0;
+                }
+
+            }
+            else
+            {
+                enemy.isStopped = false;
+                enemy.SetDestination(playerTarget.transform.position);
+                animator.SetBool("Run", true);
+                animator.SetBool("Attack", false);
+            }
         }
 
         if (enemyHealth <= 0) 

@@ -68,7 +68,13 @@ public class SceneChange : MonoBehaviour
 
     private void PersistItems()
     {
-        GameManager.instance.currentPrimary.transform.SetParent(GameManager.instance.gameObject.transform, false);
-        GameManager.instance.currentGrenade.transform.SetParent(GameManager.instance.gameObject.transform, false);
+        if (GameManager.instance.currentPrimary != null)
+        {
+            GameManager.instance.currentPrimary.transform.SetParent(GameManager.instance.gameObject.transform, false);
+        }
+        if (GameManager.instance.currentGrenade != null)
+        {
+            GameManager.instance.currentGrenade.transform.SetParent(GameManager.instance.gameObject.transform, false);
+        }
     }
 }

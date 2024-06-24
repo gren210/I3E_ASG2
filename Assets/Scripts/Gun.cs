@@ -83,11 +83,12 @@ public class Gun : Interactable
         if (currentCooldown <= 0f)
         {
             bool hit = Physics.Raycast(thePlayer.playerCamera.position, thePlayer.playerCamera.forward, out hitInfo, bulletRange);
-            //gunAudioSource.PlayOneShot(gunShot);
+            gunAudioSource.PlayOneShot(gunShot);
             GameObject currentAudio = Instantiate(gunAudio);
             Destroy(currentAudio,2f);
             muzzleFlash.GetComponent<ParticleSystem>().Play();
             currentCooldown = fireCooldown;
+
             ShakeCamera(shakeIntensity, shakeFrequency);
             shakeTimerStart = shakeTimer;
             //GameObject newBullet = Instantiate(bullet, gunMuzzle.transform.position, gunMuzzle.transform.rotation);

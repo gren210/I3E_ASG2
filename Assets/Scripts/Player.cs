@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
 
     Grenade currentGrenadePickup;
 
+    Crystal currentCrystal;
+
     //public GameObject currentGun;
 
     //[SerializeField]
@@ -83,6 +85,7 @@ public class Player : MonoBehaviour
             hitInfo.transform.TryGetComponent<GiftBox>(out currentGiftBox);
             hitInfo.transform.TryGetComponent<Gun>(out currentGunPickup);
             hitInfo.transform.TryGetComponent<Grenade>(out currentGrenadePickup);
+            hitInfo.transform.TryGetComponent<Crystal>(out currentCrystal);
 
             if (hitInfo.transform.TryGetComponent<Interactable>(out currentInteractable))
             {
@@ -123,19 +126,26 @@ public class Player : MonoBehaviour
                 currentGrenadePickup.Interact(this);
             }
         }
+        if (currentCrystal != null)
+        {
+            currentCrystal.Interact(this);
+        }
     }
 
     void OnFire()
     {
-        if(GameManager.instance.currentEquippable != null)
+        if (!GameManager.instance.isTutorial)
         {
-            if (GameManager.instance.currentEquippable == GameManager.instance.currentPrimary)
+            if (GameManager.instance.currentEquippable != null)
             {
-                GameManager.instance.currentPrimary.GetComponent<Gun>().Shoot(this);
-            }
-            else if (GameManager.instance.currentEquippable == GameManager.instance.currentGrenade)
-            {
-                GameManager.instance.currentEquippable.GetComponent<Grenade>().thrown = true;
+                if (GameManager.instance.currentEquippable == GameManager.instance.currentPrimary)
+                {
+                    GameManager.instance.currentPrimary.GetComponent<Gun>().Shoot(this);
+                }
+                else if (GameManager.instance.currentEquippable == GameManager.instance.currentGrenade)
+                {
+                    GameManager.instance.currentEquippable.GetComponent<Grenade>().thrown = true;
+                }
             }
         }
     }

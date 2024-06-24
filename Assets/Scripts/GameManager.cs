@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Cinemachine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -42,7 +43,10 @@ public class GameManager : MonoBehaviour
     public GameObject UI;
 
     public TextMeshProUGUI interactionText;
+
     public TextMeshProUGUI jumpText;
+
+    public bool isTutorial;
 
     private void Awake()
     {
@@ -69,6 +73,11 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         healthText.text = "Health: " + playerHealth;
+
+        if(SceneManager.GetActiveScene().buildIndex >= 1)
+        {
+            isTutorial = false;
+        }
 
     }
 

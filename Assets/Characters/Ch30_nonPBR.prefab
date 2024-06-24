@@ -1975,9 +1975,10 @@ GameObject:
   - component: {fileID: 6541275055525850102}
   - component: {fileID: 1824037972999399323}
   - component: {fileID: 3273094912574222971}
+  - component: {fileID: 6249114876280878428}
   m_Layer: 0
   m_Name: Ch30_nonPBR
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2012,11 +2013,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTarget: {fileID: 0}
-  hostileDistance: 0
-  enemySpeed: 0
+  spawnDistance: 0
+  enemySpeed: 6
   enemyHealth: 100
   enemyDamage: 5
-  damageDistance: 2
+  damageDistance: 2.5
   damageTimer: 1
   enemy: {fileID: 3273094912574222971}
   animator: {fileID: 1824037972999399323}
@@ -2030,7 +2031,7 @@ Animator:
   m_GameObject: {fileID: 8156455144159992262}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: e7b3f15eef0699c40bc7c71d5f013ad2, type: 3}
-  m_Controller: {fileID: 9100000, guid: e8c29c528dd31be4bb20d64dbcb74c2a, type: 2}
+  m_Controller: {fileID: 9100000, guid: ab5e742bae5e89c4dbc3266b8bf7707d, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -2063,6 +2064,29 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!136 &6249114876280878428
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8156455144159992262}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.3
+  m_Height: 1.7
+  m_Direction: 2
+  m_Center: {x: 0, y: 0.37, z: 0}
 --- !u!1 &8404151593803241983
 GameObject:
   m_ObjectHideFlags: 0
