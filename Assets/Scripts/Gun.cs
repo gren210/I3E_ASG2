@@ -101,6 +101,12 @@ public class Gun : Interactable
                     enemy.enemyHealth -= damage;
                     AudioSource.PlayClipAtPoint(hitSound, hitInfo.point);
                 }
+                else if (hitInfo.transform.TryGetComponent<Boss>(out Boss boss))
+                {
+                    Debug.Log("Boss is shot");
+                    boss.enemyHealth -= damage;
+                    AudioSource.PlayClipAtPoint(hitSound, hitInfo.point);
+                }
             }
         }
     }

@@ -37,6 +37,7 @@ public class EnemySpawnTrigger : MonoBehaviour
                     Destroy(enemy,0.1f);
                 }
             }
+            Destroy(gameObject);
         }
     }
 }

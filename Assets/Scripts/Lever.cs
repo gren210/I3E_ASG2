@@ -15,6 +15,12 @@ public class Lever : Interactable
 
     Vector3 targetRotation;
 
+    bool opening;
+
+    bool closing;
+
+    bool opened;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +30,7 @@ public class Lever : Interactable
     // Update is called once per frame
     void Update()
     {
-        if (linkedDoor.opening || linkedDoor.closing)
+        if (opening)
         {
             currentDuration += Time.deltaTime;
             float t = currentDuration / openDuration;
@@ -32,6 +38,23 @@ public class Lever : Interactable
             if (currentDuration > openDuration)
             {
                 currentDuration = 0f;
+                opening = false;
+                opened = true;
+
+            }
+        }
+
+        if (closing)
+        {
+            currentDuration += Time.deltaTime;
+            float t = currentDuration / openDuration;
+            transform.eulerAngles = Vector3.Lerp(startRotation, targetRotation, t);
+            if (currentDuration > openDuration)
+            {
+                transform.eulerAngles = targetRotation;
+                currentDuration = 0f;
+                closing = false;
+                opened = false;
 
             }
         }
@@ -40,33 +63,37 @@ public class Lever : Interactable
 
     private void PullLeverDown()
     {
-        if(!linkedDoor.opening)
+        if(!opening)
         {
             startRotation = transform.eulerAngles;
             targetRotation = startRotation;
             targetRotation.z -= 45f;
+
+            opening = true;
         }
     }
 
     private void PullLeverUp()
     {
-        if (!linkedDoor.closing)
+        if (!closing)
         {
             startRotation = transform.eulerAngles;
             targetRotation = startRotation;
             targetRotation.z += 45f;
+
+            closing = true;
         }
     }
 
     public override void Interact(Player thePlayer)
     {
         base.Interact(thePlayer);
-        if (linkedDoor.opened)
+        if (!linkedDoor.opening && opened)
         {
             linkedDoor.CloseDoor();
             PullLeverUp();
         }
-        else
+        else if (!linkedDoor.closing && !opened)
         {
             linkedDoor.OpenDoor();
             PullLeverDown();

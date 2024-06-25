@@ -38,15 +38,10 @@ public class Enemy : MonoBehaviour
 
     public Animator animator;
 
-    private void Awake()
-    {
-        //playerTarget = GameManager.instance.playerObject;
-    }
-
     private void Start()
     {
         animator = gameObject.GetComponent<Animator>();
-        currentTimer = 1;
+        currentTimer = damageTimer;
         enemy.speed = enemySpeed;
         playerTarget = GameManager.instance.playerObject;
 
@@ -58,14 +53,10 @@ public class Enemy : MonoBehaviour
     {
         playerTarget = GameManager.instance.playerObject;
         Debug.DrawLine(gameObject.transform.position, playerTarget.transform.position, Color.red);
-        //Vector3 targetRay = playerTarget.transform.position - gameObject.transform.position;
-        //targetRay.y += 0.5f;
         NavMeshHit hitInfo;
         bool obstacle = enemy.Raycast(playerTarget.transform.position, out hitInfo);
-        Debug.Log(hitInfo);
 
-        //Debug.Log(Vector3.Distance(playerTarget.transform.position, transform.position));
-        if (!obstacle)// && Vector3.Distance(playerTarget.transform.position, transform.position) <= hostileDistance)
+        if (!obstacle)
         {
             detected = true;
         }
@@ -87,6 +78,7 @@ public class Enemy : MonoBehaviour
             }
             else
             {
+
                 enemy.isStopped = false;
                 enemy.SetDestination(playerTarget.transform.position);
                 animator.SetBool("Run", true);
