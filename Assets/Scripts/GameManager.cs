@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Cinemachine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     public float playerHealth = 100;
 
-    public int grenadeCount = 0;
+    public Image healthBar;
 
     public GameObject equipPosition;
 
@@ -43,15 +45,36 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public bool haveCrystal;
 
+    public GameObject transition;
+
+    public Animator transitionAnimator;
+
     public int healCount;
 
     public int healAmount;
 
     public GameObject UI;
 
+    public GameObject interactionBox;
+
     public TextMeshProUGUI interactionText;
 
     public TextMeshProUGUI jumpText;
+
+    public TextMeshProUGUI ammoText;
+
+    public TextMeshProUGUI healText;
+
+    [SerializeField]
+    GameObject[] primaryIcons;
+
+    GameObject currentPrimaryIcon;
+
+    [SerializeField]
+    GameObject[] grenadeIcons;
+
+    [HideInInspector]
+    public GameObject currentGrenadeIcon;
 
     private void Awake()
     {
@@ -78,12 +101,48 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         healthText.text = "Health: " + playerHealth;
+        healText.text = "" + healCount;
+        if (currentEquippable == currentPrimary && currentEquippable != null)
+        {
+            ammoText.text = "" + currentEquippable.GetComponent<Gun>().currentAmmoCount;
+        }
 
+    }
+
+    public void UpdateHealth()
+    {
+        healthBar.fillAmount = playerHealth / 100f;
+    }
+
+    public void IconSwitchPrimary(int index)
+    {
+        if(currentPrimaryIcon != primaryIcons[index])
+        {
+            if(currentPrimaryIcon != null)
+            {
+                currentPrimaryIcon.SetActive(false);
+            }
+            currentPrimaryIcon = primaryIcons[index];
+            currentPrimaryIcon.SetActive(true);
+        }
+    }
+
+    public void IconSwitchGrenade(int index)
+    {
+        if (currentGrenadeIcon != grenadeIcons[index])
+        {
+            if (currentGrenadeIcon != null)
+            {
+                currentGrenadeIcon.SetActive(false);
+            }
+            currentGrenadeIcon = grenadeIcons[index];
+            currentGrenadeIcon.SetActive(true);
+        }
     }
 
     //public void IncreaseScore(int scoreToAdd)
     //{
-        //currentScore += scoreToAdd;
-        //scoreText.text = "Score: " + currentScore;
+    //currentScore += scoreToAdd;
+    //scoreText.text = "Score: " + currentScore;
     //}
 }

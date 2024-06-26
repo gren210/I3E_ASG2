@@ -43,24 +43,26 @@ public class Boss : MonoBehaviour
     [SerializeField]
     float smashDistance;
 
-    Vector3 currentPlayerLocation;
+    GameObject currentPlayerLocation;
 
     [SerializeField]
     GameObject key;
+
+    bool attacked = false;
 
     private void Start()
     {
         animator = gameObject.GetComponent<Animator>();
         currentTimer = 0;
         enemy.speed = enemySpeed;
-        playerTarget = GameManager.instance.playerObject;
-
     }
 
 
     // Update is called once per frame
     void Update()
     {
+        playerTarget = GameManager.instance.playerObject;
+        float currentDistance = Vector3.Distance(playerTarget.transform.position, transform.position);
         playerTarget = GameManager.instance.playerObject;
         Debug.DrawLine(gameObject.transform.position, playerTarget.transform.position, Color.red);
         NavMeshHit hitInfo;
@@ -76,34 +78,39 @@ public class Boss : MonoBehaviour
             currentTimer += Time.deltaTime;
             if (smash)
             {
+
                 if (currentPlayerLocation == null)
                 {
-                    currentPlayerLocation = playerTarget.transform.position;
-                    enemy.SetDestination(currentPlayerLocation);
+                    currentPlayerLocation = playerTarget;
+                    enemy.SetDestination(currentPlayerLocation.transform.position);
+                    transform.LookAt(playerTarget.transform);
                 }
-                if(currentTimer >= 1.7 && Vector3.Distance(playerTarget.transform.position, transform.position) <= smashDistance)
+                if(currentTimer >= 1.7 && currentTimer <= 1.7 + Time.deltaTime && currentDistance <= smashDistance && !attacked)                
                 {
                     GameManager.instance.playerHealth -= enemyDamage;
-                    smash = false;
+                    GameManager.instance.UpdateHealth();
+                    attacked = true;
                 }
                 if(currentTimer >= damageTimer)
                 {
                     smash = false;
                     currentTimer = 0;
+                    attacked = false;
+                    currentPlayerLocation = null;
+                    Debug.Log("bruh");
                 }
 
             }
             else
             {
                 //currentTimer += Time.deltaTime;
-                if (Vector3.Distance(playerTarget.transform.position, transform.position) <= damageDistance && currentTimer >= damageTimer)
+                if (currentDistance <= damageDistance && currentTimer >= damageTimer)
                 {
                     enemy.isStopped = true;
                     animator.SetBool("Run", false);
                     animator.SetTrigger("Attack");
                     if (currentTimer >= damageTimer)
                     {
-                        //GameManager.instance.playerHealth -= enemyDamage;
                         currentTimer = 0;
                         smash = true;
                     }

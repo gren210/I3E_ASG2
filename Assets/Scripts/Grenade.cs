@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Grenade : Interactable
 {
+    public string interactText;
+
     [SerializeField]
     float grenadeDistance;
 
@@ -18,6 +20,7 @@ public class Grenade : Interactable
 
     public float explodeDamage = 70f;
 
+    [HideInInspector]
     public bool thrown = false;
 
     bool set = true;
@@ -40,6 +43,9 @@ public class Grenade : Interactable
 
     [SerializeField]
     float swapThrowForce;
+
+    [SerializeField]
+    int iconIndex;
 
     private void Awake()
     {
@@ -64,6 +70,7 @@ public class Grenade : Interactable
             else if (collider.gameObject.tag == "Player")
             {
                 GameManager.instance.playerHealth -= explodeDamage;
+                GameManager.instance.UpdateHealth();
             }
         }
     }
@@ -81,11 +88,12 @@ public class Grenade : Interactable
         {
             if (set)
             {
+                GameManager.instance.currentGrenadeIcon.SetActive(false);
+                GameManager.instance.currentGrenadeIcon = null;
                 gameObject.transform.parent = null;
                 gameObject.GetComponent<SphereCollider>().enabled = true;
                 gameObject.GetComponent<Rigidbody>().isKinematic = false;
                 gameObject.GetComponent<Rigidbody>().AddForce(grenadeDistance * GameManager.instance.playerCamera.transform.forward);
-                GameManager.instance.grenadeCount -= 2;
                 GameManager.instance.currentGrenade = null;
                 GameManager.instance.currentEquippable = null;
                 set = false;
@@ -136,7 +144,6 @@ public class Grenade : Interactable
         {
             GameManager.instance.currentEquippable.SetActive(false);
         }
-        GameManager.instance.grenadeCount += 1;
         gameObject.transform.SetParent(GameManager.instance.playerCamera.transform, false);
         gameObject.GetComponent<SphereCollider>().enabled = false;
         gameObject.GetComponent<Rigidbody>().isKinematic = true;
@@ -145,6 +152,7 @@ public class Grenade : Interactable
         GameManager.instance.currentEquippable.SetActive(true);
         gameObject.transform.position = GameManager.instance.equipPosition.transform.position;
         gameObject.transform.eulerAngles = GameManager.instance.equipPosition.transform.eulerAngles;
+        GameManager.instance.IconSwitchGrenade(iconIndex);
     }
 
     //public override void ShakeCamera(float shakeIntensity, float shakeFrequency)

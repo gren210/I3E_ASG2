@@ -24,6 +24,10 @@ public class Player : MonoBehaviour
 
     Lever currentLever;
 
+    Heal currentHeal;
+
+    PlaceCrystal currentPlaceCrystal;
+
     //public GameObject currentGun;
 
     //[SerializeField]
@@ -98,19 +102,24 @@ public class Player : MonoBehaviour
             hitInfo.transform.TryGetComponent<Door>(out currentDoor);
             hitInfo.transform.TryGetComponent<Key>(out currentKey);
             hitInfo.transform.TryGetComponent<Lever>(out currentLever);
+            hitInfo.transform.TryGetComponent<Heal>(out currentHeal);
+            hitInfo.transform.TryGetComponent<PlaceCrystal>(out currentPlaceCrystal);
 
             if (hitInfo.transform.TryGetComponent<Interactable>(out currentInteractable))
             {
+                GameManager.instance.interactionBox.SetActive(true);
                 interactionText.gameObject.SetActive(true);
             }
             else
             {
+                GameManager.instance.interactionBox.SetActive(false);
                 currentInteractable = null;
                 interactionText.gameObject.SetActive(false);
             }
         }
         else
         {
+            GameManager.instance.interactionBox.SetActive(false);
             currentInteractable = null;
             interactionText.gameObject.SetActive(false);
         }
@@ -118,11 +127,10 @@ public class Player : MonoBehaviour
 
     void OnInteract()
     {
-        Debug.Log(currentInteractable);
-        if(currentInteractable != null)
-        {
-            currentInteractable.Interact(this);
-        }
+        //if(currentInteractable != null)
+        //{
+            //currentInteractable.Interact(this);
+        //}
         if (currentGiftBox != null)
         {
             currentGiftBox.Interact(this);
@@ -138,6 +146,10 @@ public class Player : MonoBehaviour
                 currentGrenadePickup.Interact(this);
             }
         }
+        if (currentDoor != null)
+        {
+            currentDoor.Interact(this);
+        }
         if (currentCrystal != null)
         {
             currentCrystal.Interact(this);
@@ -150,6 +162,14 @@ public class Player : MonoBehaviour
         {
             currentLever.Interact(this);
         }
+        if (currentHeal != null)
+        {
+            currentHeal.Interact(this);
+        }
+        if (currentPlaceCrystal != null)
+        {
+            currentPlaceCrystal.Interact(this);
+        }
 
     }
 
@@ -159,8 +179,12 @@ public class Player : MonoBehaviour
         {
             if (GameManager.instance.currentEquippable != null)
             {
-                if (GameManager.instance.currentEquippable == GameManager.instance.currentPrimary)
+                if (GameManager.instance.currentEquippable == GameManager.instance.currentPrimary) //&& !GameManager.instance.currentPrimary.GetComponent<Gun>().reloading)
                 {
+                    //if (GameManager.instance.currentPrimary.GetComponent<Gun>().isFullAuto)
+                    //{
+
+                    //}
                     GameManager.instance.currentPrimary.GetComponent<Gun>().Shoot(this);
                 }
                 else if (GameManager.instance.currentEquippable == GameManager.instance.currentGrenade)
@@ -168,6 +192,14 @@ public class Player : MonoBehaviour
                     GameManager.instance.currentEquippable.GetComponent<Grenade>().thrown = true;
                 }
             }
+        }
+    }
+
+    void OnReload()
+    {
+        if (GameManager.instance.currentEquippable == GameManager.instance.currentPrimary)
+        {
+            GameManager.instance.currentPrimary.GetComponent<Gun>().Reload(this);
         }
     }
 
@@ -184,7 +216,7 @@ public class Player : MonoBehaviour
 
     void OnEquipGrenade()
     {
-        if(GameManager.instance.readySwap == true && GameManager.instance.grenadeCount > 0)
+        if(GameManager.instance.readySwap == true && !GameManager.instance.currentPrimary.GetComponent<Gun>().reloading)
         {
             if (GameManager.instance.currentEquippable != null)
             {
@@ -213,6 +245,10 @@ public class Player : MonoBehaviour
         {
             GameManager.instance.healCount--;
             GameManager.instance.playerHealth += GameManager.instance.healAmount;
+            if (GameManager.instance.playerHealth > 100)
+            {
+                GameManager.instance.playerHealth = 100;
+            }
 
         }
     }

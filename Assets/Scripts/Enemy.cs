@@ -34,9 +34,26 @@ public class Enemy : MonoBehaviour
 
     public NavMeshAgent enemy;
 
-    bool detected;
+    public bool detected;
 
     public Animator animator;
+
+    [SerializeField]
+    AudioSource idleSound;
+
+    [SerializeField]
+    AudioSource detectSound;
+
+    [SerializeField]
+    AudioSource roarSound;
+
+    bool hasRoared = false;
+
+    [SerializeField]
+    float roarSoundDelay;
+
+    float currentRoarTimer;
+
 
     private void Start()
     {
@@ -44,6 +61,7 @@ public class Enemy : MonoBehaviour
         currentTimer = damageTimer;
         enemy.speed = enemySpeed;
         playerTarget = GameManager.instance.playerObject;
+        currentRoarTimer = 0;
 
     }
 
@@ -63,6 +81,21 @@ public class Enemy : MonoBehaviour
 
         if (detected)
         {
+            currentRoarTimer += Time.deltaTime;
+            idleSound.Stop();
+
+            if(!hasRoared)
+            {
+                detectSound.Play();
+                hasRoared = true;
+            }
+
+            if (currentRoarTimer > roarSoundDelay)
+            {
+                roarSound.Play();
+                currentRoarTimer = 0;
+            }
+
             currentTimer += Time.deltaTime;
             if (Vector3.Distance(playerTarget.transform.position, transform.position) <= damageDistance)
             {
@@ -72,6 +105,7 @@ public class Enemy : MonoBehaviour
                 if (currentTimer >= damageTimer)
                 {
                     GameManager.instance.playerHealth -= enemyDamage;
+                    GameManager.instance.UpdateHealth();
                     currentTimer = 0;
                 }
 

@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Key : Interactable
 {
-    public Door linkedDoor;
+    public string interactText;
+
+    public GameObject linkedDoor;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        linkedDoor = GameObject.Find("Door");
     }
 
     // Update is called once per frame
@@ -21,7 +23,7 @@ public class Key : Interactable
     public override void Interact(Player thePlayer)
     {
         base.Interact(thePlayer);
-        linkedDoor.locked = false;
+        linkedDoor.GetComponent<Door>().locked = false;
         Destroy(gameObject);
     }
 }

@@ -9,6 +9,9 @@ public class EnemySpawnTrigger : MonoBehaviour
     [SerializeField]
     GameObject[] enemies;
 
+    [SerializeField]
+    bool instantDetect;
+
     void Start()
     {
         
@@ -35,6 +38,10 @@ public class EnemySpawnTrigger : MonoBehaviour
                 {
                     enemy.GetComponent<EnemySpawn>().SpawnEnemy();
                     Destroy(enemy,0.1f);
+                }
+                if (instantDetect)
+                {
+                    enemy.GetComponent<EnemySpawn>().instantDetect = true;
                 }
             }
             Destroy(gameObject);

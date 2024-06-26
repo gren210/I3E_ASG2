@@ -6,6 +6,8 @@ using UnityEngine.UIElements;
 
 public class Door : Interactable
 {
+    public string interactText;
+
     [HideInInspector]
     public bool opened;
 

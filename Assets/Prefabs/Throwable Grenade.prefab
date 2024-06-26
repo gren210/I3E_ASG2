@@ -60,7 +60,7 @@ MonoBehaviour:
   grenadeDistance: 200
   delay: 2
   effect: {fileID: 9106393578673363630}
-  explodeRadius: 15
+  explodeRadius: 7
   explodeDamage: 70
   thrown: 0
   grenadeSound: {fileID: 8300000, guid: 15e253825dd639e459f109695ee81f06, type: 3}
@@ -68,6 +68,7 @@ MonoBehaviour:
   shakeIntensity: 4
   shakeFrequency: 10
   swapThrowForce: 150
+  iconIndex: 0
 --- !u!23 &8711096682933328609
 MeshRenderer:
   m_ObjectHideFlags: 0

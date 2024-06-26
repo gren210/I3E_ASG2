@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Crystal : Interactable
 {
+    public string interactText;
+
     [SerializeField]
-    Door door;
+    GameObject[] enemies;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +24,19 @@ public class Crystal : Interactable
     public override void Interact(Player thePlayer)
     {
         base.Interact(thePlayer);
-        door.OpenDoor();
+        foreach (GameObject enemy in enemies)
+        {
+            if (enemy.GetComponent<EnemySpawn>().isSpawnOverTime)
+            {
+                enemy.GetComponent<EnemySpawn>().startSpawning = true;
+            }
+
+            else
+            {
+                enemy.GetComponent<EnemySpawn>().SpawnEnemy();
+                Destroy(enemy);
+            }
+        }
+        Destroy(gameObject);
     }
 }

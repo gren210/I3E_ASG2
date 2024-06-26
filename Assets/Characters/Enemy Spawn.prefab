@@ -44,8 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ba2a4b9ab09ba45b50342ec0ecca6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyAsset: {fileID: 7086609487677653964, guid: 35923bbd3ca6bb844827c892d99563f7,
-    type: 3}
+  enemyAsset: {fileID: 0}
   startSpawning: 0
   isSpawnOverTime: 0
   spawnTime: 0

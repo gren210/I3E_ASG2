@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlaceCrystal : Interactable
 {
+    public string interactText;
+
     [SerializeField]
     GameObject crystal;
 

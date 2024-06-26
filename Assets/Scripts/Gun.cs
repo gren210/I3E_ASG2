@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Gun : Interactable
 {
+    public string interactText;
+
     public float fireCooldown;
 
     private float currentCooldown;
@@ -13,6 +15,8 @@ public class Gun : Interactable
     public float damage;
 
     public float bulletRange;
+
+    public bool isFullAuto;
 
     public AudioClip gunShot;
 
@@ -49,10 +53,28 @@ public class Gun : Interactable
     [SerializeField]
     float bulletSpeed;
 
+    public int ammoCount;
+
+    [SerializeField]
+    float reloadTime;
+
+    float currentReloadTimer;
+
+    [HideInInspector]
+    public bool reloading;
+
+    [HideInInspector]
+    public int currentAmmoCount;
+
+    [SerializeField]
+    int iconIndex;
+
     // Start is called before the first frame update
     void Start()
     {
         currentCooldown = fireCooldown;
+        currentAmmoCount = ammoCount;
+        currentReloadTimer = reloadTime;
     }
 
     // Update is called once per frame
@@ -70,6 +92,17 @@ public class Gun : Interactable
                 GameManager.instance.readySwap = true;
             }
         }
+
+        if (reloading)
+        {
+            currentReloadTimer -= Time.deltaTime;
+            if (currentReloadTimer <= 0f)
+            {
+                reloading = false;
+                currentReloadTimer = reloadTime;
+                currentAmmoCount = ammoCount;
+            }
+        }
     }
 
     private void Awake()
@@ -79,35 +112,46 @@ public class Gun : Interactable
 
     public void Shoot(Player thePlayer)
     {
-        RaycastHit hitInfo;
-        if (currentCooldown <= 0f)
+        if (currentAmmoCount != 0 && !reloading)
         {
-            bool hit = Physics.Raycast(thePlayer.playerCamera.position, thePlayer.playerCamera.forward, out hitInfo, bulletRange);
-            gunAudioSource.PlayOneShot(gunShot);
-            GameObject currentAudio = Instantiate(gunAudio);
-            Destroy(currentAudio,2f);
-            muzzleFlash.GetComponent<ParticleSystem>().Play();
-            currentCooldown = fireCooldown;
-
-            ShakeCamera(shakeIntensity, shakeFrequency);
-            shakeTimerStart = shakeTimer;
-            //GameObject newBullet = Instantiate(bullet, gunMuzzle.transform.position, gunMuzzle.transform.rotation);
-            //newBullet.GetComponent<Rigidbody>().velocity = ((hitInfo.point - gunMuzzle.transform.position) * bulletSpeed);
-            if (hit)
+            RaycastHit hitInfo;
+            if (currentCooldown <= 0f)
             {
-                if (hitInfo.transform.TryGetComponent<Enemy>(out Enemy enemy))
+                bool hit = Physics.Raycast(thePlayer.playerCamera.position, thePlayer.playerCamera.forward, out hitInfo, bulletRange);
+                //gunAudioSource.PlayOneShot(gunShot, 0.5f);
+                GameObject currentAudio = Instantiate(gunAudio);
+                Destroy(currentAudio, 1f);
+                muzzleFlash.GetComponent<ParticleSystem>().Play();
+                currentCooldown = fireCooldown;
+                currentAmmoCount--;
+
+                ShakeCamera(shakeIntensity, shakeFrequency);
+                shakeTimerStart = shakeTimer;
+
+                if (hit)
                 {
-                    Debug.Log("Enemy is shot");
-                    enemy.enemyHealth -= damage;
-                    AudioSource.PlayClipAtPoint(hitSound, hitInfo.point);
-                }
-                else if (hitInfo.transform.TryGetComponent<Boss>(out Boss boss))
-                {
-                    Debug.Log("Boss is shot");
-                    boss.enemyHealth -= damage;
-                    AudioSource.PlayClipAtPoint(hitSound, hitInfo.point);
+                    if (hitInfo.transform.TryGetComponent<Enemy>(out Enemy enemy))
+                    {
+                        Debug.Log("Enemy is shot");
+                        enemy.enemyHealth -= damage;
+                        AudioSource.PlayClipAtPoint(hitSound, hitInfo.point);
+                    }
+                    else if (hitInfo.transform.TryGetComponent<Boss>(out Boss boss))
+                    {
+                        Debug.Log("Boss is shot");
+                        boss.enemyHealth -= damage;
+                        AudioSource.PlayClipAtPoint(hitSound, hitInfo.point);
+                    }
                 }
             }
+        }
+    }
+
+    public void Reload(Player thePlayer)
+    {
+        if (currentAmmoCount < ammoCount)
+        {
+            reloading = true;
         }
     }
 
@@ -139,6 +183,8 @@ public class Gun : Interactable
 
         gameObject.transform.position = GameManager.instance.equipPosition.transform.position;
         gameObject.transform.eulerAngles = GameManager.instance.equipPosition.transform.eulerAngles;
+
+        GameManager.instance.IconSwitchPrimary(iconIndex);
 
     }
 

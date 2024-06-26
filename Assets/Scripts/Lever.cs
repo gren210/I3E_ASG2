@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Lever : Interactable
 {
+    public string interactText;
+
     public float openDuration;
 
     float currentDuration;
