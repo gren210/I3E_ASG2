@@ -76,6 +76,18 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public GameObject currentGrenadeIcon;
 
+    public AudioSource[] BGM;
+
+    public AudioSource swapItemSound;
+
+    public AudioSource flashlightSound;
+
+    public AudioSource throwSound;
+
+    public AudioSource healSound;
+
+
+
     private void Awake()
     {
         if (instance == null)
@@ -100,7 +112,6 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        healthText.text = "Health: " + playerHealth;
         healText.text = "" + healCount;
         if (currentEquippable == currentPrimary && currentEquippable != null)
         {

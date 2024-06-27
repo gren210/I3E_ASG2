@@ -345,6 +345,11 @@ PrefabInstance:
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 4865578213729983839, guid: 6e54a70312655304f9ee4d24366bde18,
+        type: 3}
+      propertyPath: far clip plane
+      value: 600
+      objectReference: {fileID: 0}
     - target: {fileID: 9186127997117527165, guid: 6e54a70312655304f9ee4d24366bde18,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -429,7 +434,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30

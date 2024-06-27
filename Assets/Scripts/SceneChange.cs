@@ -1,3 +1,4 @@
+using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -28,6 +29,7 @@ public class SceneChange : MonoBehaviour
     void Start()
     {
         //transitionAnimator.SetTrigger("Start");
+        GameManager.instance.BGM[sceneIndex - 1].Play();
         currentTimer = 0;
         changeScene = false;
         transition = GameManager.instance.transition;
@@ -46,10 +48,13 @@ public class SceneChange : MonoBehaviour
             if (currentTimer == 0)
             {
                 transitionAnimator.SetTrigger("End");
+                GameManager.instance.playerObject.GetComponent<FirstPersonController>().enabled = false;
+                GameManager.instance.playerObject.GetComponent<Rigidbody>().isKinematic = true;
             }
             currentTimer += Time.deltaTime;
             if (currentTimer >= transitionTime)
             {
+                GameManager.instance.BGM[sceneIndex - 1].Stop();
                 SceneManager.LoadScene(sceneIndex);
                 PersistItems();
             }

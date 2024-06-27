@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
@@ -14,8 +15,15 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     float enemySpeed;
 
-    [SerializeField]
     public float enemyHealth = 100;
+
+    public float currentEnemyHealth;
+
+    public GameObject healthBar;
+
+    public Image healthBarGreen;
+
+    bool showHealthBar = false;
 
     [SerializeField]
     float enemyDamage = 5;
@@ -47,6 +55,14 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     AudioSource roarSound;
 
+    [SerializeField]
+    AudioSource biteSound;
+
+    bool biteSoundPlayed = false;
+
+    [SerializeField]
+    AudioClip deathSound;
+
     bool hasRoared = false;
 
     [SerializeField]
@@ -54,6 +70,8 @@ public class Enemy : MonoBehaviour
 
     float currentRoarTimer;
 
+    [SerializeField]
+    bool attacking = false;
 
     private void Start()
     {
@@ -62,6 +80,7 @@ public class Enemy : MonoBehaviour
         enemy.speed = enemySpeed;
         playerTarget = GameManager.instance.playerObject;
         currentRoarTimer = 0;
+        currentEnemyHealth = enemyHealth;
 
     }
 
@@ -90,7 +109,7 @@ public class Enemy : MonoBehaviour
                 hasRoared = true;
             }
 
-            if (currentRoarTimer > roarSoundDelay)
+            if (currentRoarTimer > roarSoundDelay && !attacking)
             {
                 roarSound.Play();
                 currentRoarTimer = 0;
@@ -99,6 +118,14 @@ public class Enemy : MonoBehaviour
             currentTimer += Time.deltaTime;
             if (Vector3.Distance(playerTarget.transform.position, transform.position) <= damageDistance)
             {
+                attacking = true; 
+                roarSound.Stop();
+                detectSound.Stop();
+                if (!biteSoundPlayed)
+                {
+                    biteSound.Play();
+                    biteSoundPlayed = true;
+                }
                 enemy.isStopped = true;
                 animator.SetBool("Run", false);
                 animator.SetBool("Attack", true);
@@ -112,7 +139,14 @@ public class Enemy : MonoBehaviour
             }
             else
             {
-
+                //biteSound.Stop();
+                if (biteSoundPlayed)
+                {
+                    roarSound.Play();
+                    biteSound.Stop();
+                }
+                attacking = false;
+                biteSoundPlayed = false;
                 enemy.isStopped = false;
                 enemy.SetDestination(playerTarget.transform.position);
                 animator.SetBool("Run", true);
@@ -120,8 +154,20 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        if (enemyHealth <= 0) 
+        if (currentEnemyHealth < enemyHealth)
         {
+            if (!showHealthBar)
+            {
+                showHealthBar = true;
+                healthBar.SetActive(true);
+                healthBarGreen.fillAmount = currentEnemyHealth / enemyHealth;
+            }
+            healthBar.transform.LookAt(healthBar.transform.position + GameManager.instance.playerCamera.forward);
+        }
+
+        if (currentEnemyHealth <= 0) 
+        {
+            AudioSource.PlayClipAtPoint(deathSound,gameObject.transform.position);
             Destroy(gameObject);
         }
     }

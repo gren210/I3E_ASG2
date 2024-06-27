@@ -19,6 +19,9 @@ public class Door : Interactable
 
     float currentDuration;
 
+    [SerializeField]
+    AudioSource openingSound;
+
     [HideInInspector]
     public bool opening = false;
 
@@ -83,6 +86,7 @@ public class Door : Interactable
                 transform.position = targetPosition;
                 opening = false;
                 opened = true;
+                openingSound.Stop();
             }
 
         }
@@ -106,6 +110,7 @@ public class Door : Interactable
                 transform.position = targetPosition;
                 closing = false;
                 opened = false;
+                openingSound.Stop();
             }
 
         }
@@ -115,6 +120,7 @@ public class Door : Interactable
     {
         if (!opening)
         {
+            openingSound.Play();
             startRotation = transform.eulerAngles;
             targetRotation = startRotation;
             targetRotation.x += rotationX;
@@ -135,6 +141,7 @@ public class Door : Interactable
     {
         if (!closing)
         {
+            openingSound.Play();
             startRotation = transform.eulerAngles;
             targetRotation = startRotation;
             targetRotation.x -= rotationX;

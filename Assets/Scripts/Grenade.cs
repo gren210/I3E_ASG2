@@ -64,8 +64,9 @@ public class Grenade : Interactable
         { 
             if (collider.gameObject.tag == "Enemy")
             {
-                Debug.Log("ok");
-                collider.gameObject.GetComponent<Enemy>().enemyHealth -= explodeDamage;
+                Enemy enemy = collider.gameObject.GetComponent<Enemy>();
+                collider.gameObject.GetComponent<Enemy>().currentEnemyHealth -= explodeDamage;
+                enemy.healthBarGreen.fillAmount = enemy.currentEnemyHealth / enemy.enemyHealth;
             }
             else if (collider.gameObject.tag == "Player")
             {
@@ -88,6 +89,7 @@ public class Grenade : Interactable
         {
             if (set)
             {
+                GameManager.instance.throwSound.Play();
                 GameManager.instance.currentGrenadeIcon.SetActive(false);
                 GameManager.instance.currentGrenadeIcon = null;
                 gameObject.transform.parent = null;
@@ -153,6 +155,7 @@ public class Grenade : Interactable
         gameObject.transform.position = GameManager.instance.equipPosition.transform.position;
         gameObject.transform.eulerAngles = GameManager.instance.equipPosition.transform.eulerAngles;
         GameManager.instance.IconSwitchGrenade(iconIndex);
+        GameManager.instance.swapItemSound.Play();
     }
 
     //public override void ShakeCamera(float shakeIntensity, float shakeFrequency)

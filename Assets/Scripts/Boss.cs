@@ -50,6 +50,12 @@ public class Boss : MonoBehaviour
 
     bool attacked = false;
 
+    [SerializeField]
+    int playMusicIndex;
+
+    [SerializeField]
+    int stopMusicIndex;
+
     private void Start()
     {
         animator = gameObject.GetComponent<Animator>();
@@ -128,6 +134,8 @@ public class Boss : MonoBehaviour
 
         if (enemyHealth <= 0) 
         {
+            GameManager.instance.BGM[stopMusicIndex].Stop();
+            GameManager.instance.BGM[playMusicIndex].Play();
             Destroy(gameObject);
             Instantiate(key, gameObject.transform.position,gameObject.transform.rotation);
         }

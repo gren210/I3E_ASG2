@@ -205,18 +205,21 @@ public class Player : MonoBehaviour
 
     void OnEquipGun()
     {
-        if (GameManager.instance.readySwap == true && GameManager.instance.currentEquippable != null)
+        if(GameManager.instance.currentEquippable != GameManager.instance.currentPrimary && (GameManager.instance.currentPrimary != null))
         {
-            GameManager.instance.currentEquippable.SetActive(false);
+            if (GameManager.instance.readySwap == true && GameManager.instance.currentEquippable != null)
+            {
+                GameManager.instance.currentEquippable.SetActive(false);
+            }
+            GameManager.instance.currentEquippable = GameManager.instance.currentPrimary;
+            GameManager.instance.currentEquippable.SetActive(true);
+            GameManager.instance.swapItemSound.Play();
         }
-        GameManager.instance.currentEquippable = GameManager.instance.currentPrimary;
-        GameManager.instance.currentEquippable.SetActive(true);
-
     }
 
     void OnEquipGrenade()
     {
-        if(GameManager.instance.readySwap == true && !GameManager.instance.currentPrimary.GetComponent<Gun>().reloading)
+        if(GameManager.instance.readySwap == true && !GameManager.instance.currentPrimary.GetComponent<Gun>().reloading && GameManager.instance.currentGrenade != null && GameManager.instance.currentEquippable != GameManager.instance.currentGrenade)
         {
             if (GameManager.instance.currentEquippable != null)
             {
@@ -224,6 +227,7 @@ public class Player : MonoBehaviour
             }
             GameManager.instance.currentEquippable = GameManager.instance.currentGrenade;
             GameManager.instance.currentEquippable.SetActive(true);
+            GameManager.instance.swapItemSound.Play();
         }
     }
 
@@ -232,16 +236,18 @@ public class Player : MonoBehaviour
         if (flashlight.activeSelf == false)
         {
             flashlight.SetActive(true);
+            GameManager.instance.flashlightSound.Play();
         }
         else
         {
             flashlight.SetActive(false);
+            GameManager.instance.flashlightSound.Play();
         }
     }
 
     void OnHeal()
     {
-        if (GameManager.instance.healCount > 0)
+        if (GameManager.instance.healCount > 0 && GameManager.instance.playerHealth != 100)
         {
             GameManager.instance.healCount--;
             GameManager.instance.playerHealth += GameManager.instance.healAmount;
@@ -249,6 +255,8 @@ public class Player : MonoBehaviour
             {
                 GameManager.instance.playerHealth = 100;
             }
+            GameManager.instance.UpdateHealth();
+            GameManager.instance.healSound.Play();
 
         }
     }

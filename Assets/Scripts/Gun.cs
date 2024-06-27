@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.ShaderGraph.Internal;
+//using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Gun : Interactable
 {
@@ -23,6 +24,10 @@ public class Gun : Interactable
     public AudioSource gunAudioSource;
 
     public AudioClip hitSound;
+
+    public AudioSource reloadSound;
+
+    public bool isReloading = false;
 
     [SerializeField]
     GameObject gunAudio;
@@ -99,6 +104,7 @@ public class Gun : Interactable
             if (currentReloadTimer <= 0f)
             {
                 reloading = false;
+                isReloading = false;
                 currentReloadTimer = reloadTime;
                 currentAmmoCount = ammoCount;
             }
@@ -133,7 +139,8 @@ public class Gun : Interactable
                     if (hitInfo.transform.TryGetComponent<Enemy>(out Enemy enemy))
                     {
                         Debug.Log("Enemy is shot");
-                        enemy.enemyHealth -= damage;
+                        enemy.currentEnemyHealth -= damage;
+                        enemy.healthBarGreen.fillAmount = enemy.currentEnemyHealth / enemy.enemyHealth;
                         AudioSource.PlayClipAtPoint(hitSound, hitInfo.point);
                     }
                     else if (hitInfo.transform.TryGetComponent<Boss>(out Boss boss))
@@ -149,8 +156,9 @@ public class Gun : Interactable
 
     public void Reload(Player thePlayer)
     {
-        if (currentAmmoCount < ammoCount)
+        if (currentAmmoCount < ammoCount && !reloading)
         {
+            reloadSound.Play();
             reloading = true;
         }
     }
@@ -185,6 +193,7 @@ public class Gun : Interactable
         gameObject.transform.eulerAngles = GameManager.instance.equipPosition.transform.eulerAngles;
 
         GameManager.instance.IconSwitchPrimary(iconIndex);
+        GameManager.instance.swapItemSound.Play();
 
     }
 

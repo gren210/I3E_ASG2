@@ -22,6 +22,7 @@ public class Heal : Interactable
     {
         base.Interact(thePlayer);
         GameManager.instance.healCount += 1;
+        GameManager.instance.swapItemSound.Play();
         Destroy(gameObject);
     }
 }

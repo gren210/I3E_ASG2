@@ -9,6 +9,12 @@ public class Crystal : Interactable
     [SerializeField]
     GameObject[] enemies;
 
+    [SerializeField]
+    int playMusicIndex;
+
+    [SerializeField]
+    int stopMusicIndex;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +30,8 @@ public class Crystal : Interactable
     public override void Interact(Player thePlayer)
     {
         base.Interact(thePlayer);
+        GameManager.instance.BGM[stopMusicIndex].Stop();
+        GameManager.instance.BGM[playMusicIndex].Play();
         foreach (GameObject enemy in enemies)
         {
             if (enemy.GetComponent<EnemySpawn>().isSpawnOverTime)
