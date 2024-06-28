@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
@@ -15,15 +16,36 @@ public class MainMenu : MonoBehaviour
 
     AudioSource mainMenuBGM;
 
-    float currentTimer;
+    float currentTimer = 0;
 
-    bool startGame = false;
+    bool startGame;
 
     private void Start()
     {
-        mainMenuBGM = GameManager.instance.BGM[5];
+        GameManager.instance.playerHealth = GameManager.instance.setPlayerHealth;
+        GameManager.instance.currentEquippable = null;
+        GameManager.instance.currentGrenade = null;
+        GameManager.instance.currentPrimary = null;
+        GameManager.instance.healCount = 0;
+        GameManager.instance.ammoText.text = "";
+        AudioListener.pause = false;
+        startGame = false;
+        mainMenuBGM = GameManager.instance.BGM[9];
         mainMenuBGM.Play();
+        GameManager.instance.currentBGM = mainMenuBGM;
+        transition = GameManager.instance.transition;
+        transitionAnimator = GameManager.instance.transitionAnimator;
+        if (!GameManager.instance.firstLoad)
+        {
+            transitionAnimator.SetTrigger("Start");
+            
+        }
+        else
+        {
+            GameManager.instance.firstLoad = false;
+        }
         currentTimer = 0;
+        Debug.Log(startGame);
     }
 
     private void Update()
@@ -33,12 +55,15 @@ public class MainMenu : MonoBehaviour
             if (currentTimer == 0)
             {
                 transitionAnimator.SetTrigger("End");
+                Debug.Log("bruh");
             }
             currentTimer += Time.deltaTime;
             if (currentTimer >= transitionTime)
             {
                 mainMenuBGM.Stop();
-                SceneManager.LoadScene(0);
+                startGame = false;
+                currentTimer = 0;
+                SceneManager.LoadScene(6);
             }
         }
     }

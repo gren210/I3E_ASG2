@@ -6,6 +6,8 @@ using Cinemachine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using StarterAssets;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,25 +15,29 @@ public class GameManager : MonoBehaviour
 
     public GameObject playerObject;
 
-    public TextMeshProUGUI healthText;
-
+    [HideInInspector]
     public float playerHealth = 100;
+
+    public float setPlayerHealth = 100;
 
     public Image healthBar;
 
     public GameObject equipPosition;
 
-    public GameObject currentFlashlight;
+    //public GameObject currentFlashlight;
 
+    [HideInInspector]
     public GameObject currentEquippable = null;
 
+    [HideInInspector]
     public Transform playerCamera;
 
+    [HideInInspector]
     public CinemachineVirtualCamera virtualCamera;
 
     //public GameObject equipParent;
 
-    public bool isPrimary = false;
+    //public bool isPrimary = false;
 
     [HideInInspector]
     public bool readySwap = true;
@@ -52,6 +58,8 @@ public class GameManager : MonoBehaviour
     public int healCount;
 
     public int healAmount;
+
+    public GameObject allGameUI;
 
     public GameObject UI;
 
@@ -78,6 +86,9 @@ public class GameManager : MonoBehaviour
 
     public AudioSource[] BGM;
 
+    [HideInInspector]
+    public AudioSource currentBGM;
+
     public AudioSource swapItemSound;
 
     public AudioSource flashlightSound;
@@ -85,6 +96,17 @@ public class GameManager : MonoBehaviour
     public AudioSource throwSound;
 
     public AudioSource healSound;
+
+    public GameObject pauseMenu;
+
+    public GameObject allPauseUI;
+
+    public GameObject gameOverUI;
+
+    [HideInInspector]
+    public bool firstLoad = true;
+
+    bool hasDied = false;
 
 
 
@@ -94,12 +116,15 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            DontDestroyOnLoad(UI);
+            DontDestroyOnLoad(allGameUI);
+            DontDestroyOnLoad(allPauseUI);
 
         }
         else if(instance != null && instance != this)
         {
             Destroy(gameObject);
+            Destroy(allGameUI);
+            Destroy(allPauseUI);
         }
     }
 
@@ -116,6 +141,16 @@ public class GameManager : MonoBehaviour
         if (currentEquippable == currentPrimary && currentEquippable != null)
         {
             ammoText.text = "" + currentEquippable.GetComponent<Gun>().currentAmmoCount;
+        }
+        if (playerHealth <= 0 && !hasDied)
+        {
+            hasDied = true;
+            AudioListener.pause = true;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            gameOverUI.SetActive(true);
+            Time.timeScale = 0f;
+            DisableInput();
         }
 
     }
@@ -149,6 +184,21 @@ public class GameManager : MonoBehaviour
             currentGrenadeIcon = grenadeIcons[index];
             currentGrenadeIcon.SetActive(true);
         }
+    }
+
+    public void DisableInput()
+    {
+        playerObject.GetComponent<FirstPersonController>().enabled = false;
+        playerObject.GetComponent<PlayerInput>().enabled = false;
+        playerObject.GetComponent<Rigidbody>().isKinematic = true;
+    }
+
+    public void EnableInput()
+    {
+
+        playerObject.GetComponent<FirstPersonController>().enabled = true;
+        playerObject.GetComponent<PlayerInput>().enabled = true;
+        playerObject.GetComponent<Rigidbody>().isKinematic = false;
     }
 
     //public void IncreaseScore(int scoreToAdd)

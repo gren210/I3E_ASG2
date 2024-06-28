@@ -29,7 +29,11 @@ public class SceneChange : MonoBehaviour
     void Start()
     {
         //transitionAnimator.SetTrigger("Start");
+        GameManager.instance.UpdateHealth();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         GameManager.instance.BGM[sceneIndex - 1].Play();
+        GameManager.instance.currentBGM = GameManager.instance.BGM[sceneIndex - 1];
         currentTimer = 0;
         changeScene = false;
         transition = GameManager.instance.transition;
@@ -37,6 +41,10 @@ public class SceneChange : MonoBehaviour
         if(!firstScene )
         {
             transitionAnimator.SetTrigger("Start");
+        }
+        if (SceneManager.GetActiveScene().buildIndex == 6)
+        {
+            GameManager.instance.UI.SetActive(true);
         }
     }
 

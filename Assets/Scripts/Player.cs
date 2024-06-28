@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Cinemachine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -172,6 +173,30 @@ public class Player : MonoBehaviour
         }
 
     }
+
+
+    void OnPause()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        //SceneManager.GetActiveScene().buildIndex != 0
+        if (!GameManager.instance.pauseMenu.activeSelf)
+        {
+            AudioListener.pause = true;
+            GameManager.instance.DisableInput();
+            GameManager.instance.pauseMenu.SetActive(true);
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            AudioListener.pause = false;
+            GameManager.instance.EnableInput();
+            GameManager.instance.pauseMenu.SetActive(true);
+            Time.timeScale = 1f;
+        }
+
+    }
+
 
     void OnFire()
     {
