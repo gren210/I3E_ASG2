@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 46500497110129592}
+  - component: {fileID: 2045845886273415877}
   m_Layer: 0
   m_Name: blue_crystalLightsPile
   m_TagString: Untagged
@@ -34,6 +35,27 @@ Transform:
   - {fileID: 3937950397080203369}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2045845886273415877
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 61718555504751596}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.5, y: 9.53, z: 6.78}
+  m_Center: {x: -0.48, y: 1.26, z: -2.03}
 --- !u!1001 &2755980056533073563
 PrefabInstance:
   m_ObjectHideFlags: 0

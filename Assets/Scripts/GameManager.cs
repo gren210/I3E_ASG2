@@ -76,7 +76,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject[] primaryIcons;
 
-    GameObject currentPrimaryIcon;
+    [HideInInspector]
+    public GameObject currentPrimaryIcon;
 
     [SerializeField]
     GameObject[] grenadeIcons;
@@ -107,6 +108,8 @@ public class GameManager : MonoBehaviour
     public bool firstLoad = true;
 
     bool hasDied = false;
+
+    public TextMeshProUGUI extractionTimerUI;
 
 
 

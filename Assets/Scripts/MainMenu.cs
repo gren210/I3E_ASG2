@@ -28,6 +28,18 @@ public class MainMenu : MonoBehaviour
         GameManager.instance.currentPrimary = null;
         GameManager.instance.healCount = 0;
         GameManager.instance.ammoText.text = "";
+        GameManager.instance.extractionTimerUI.text = "";
+
+        if (GameManager.instance.currentPrimaryIcon!= null)
+        {
+            GameManager.instance.currentPrimaryIcon.SetActive(false);
+            GameManager.instance.currentPrimaryIcon = null;
+        }
+        if (GameManager.instance.currentGrenadeIcon != null)
+        {
+            GameManager.instance.currentGrenadeIcon.SetActive(false);
+            GameManager.instance.currentGrenadeIcon = null;
+        }
         AudioListener.pause = false;
         startGame = false;
         mainMenuBGM = GameManager.instance.BGM[9];

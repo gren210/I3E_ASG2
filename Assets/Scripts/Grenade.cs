@@ -68,6 +68,12 @@ public class Grenade : Interactable
                 collider.gameObject.GetComponent<Enemy>().currentEnemyHealth -= explodeDamage;
                 enemy.healthBarGreen.fillAmount = enemy.currentEnemyHealth / enemy.enemyHealth;
             }
+            if (collider.gameObject.tag == "Boss")
+            {
+                Boss enemy = collider.gameObject.GetComponent<Boss>();
+                enemy.enemyHealth -= explodeDamage;
+                //enemy.healthBarGreen.fillAmount = enemy.EnemyHealth / enemy.enemyHealth;
+            }
             else if (collider.gameObject.tag == "Player")
             {
                 GameManager.instance.playerHealth -= explodeDamage;

@@ -25,6 +25,9 @@ public class SceneChange : MonoBehaviour
     [SerializeField]
     bool firstScene;
 
+    [SerializeField]
+    GameObject enemies;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -63,6 +66,10 @@ public class SceneChange : MonoBehaviour
             if (currentTimer >= transitionTime)
             {
                 GameManager.instance.BGM[sceneIndex - 1].Stop();
+                if(enemies != null)
+                {
+                    Destroy(enemies);
+                }
                 SceneManager.LoadScene(sceneIndex);
                 PersistItems();
             }

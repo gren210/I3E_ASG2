@@ -48,10 +48,21 @@ public class Door : Interactable
 
     Vector3 targetPosition;
 
+    [SerializeField]
+    bool extraction;
+
+    [SerializeField]
+    float extractionTime;
+
+    [HideInInspector]
+    public float currentExtractionTimer;
+
+    bool extracted = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentExtractionTimer = extractionTime;
     }
 
     // Update is called once per frame
@@ -64,6 +75,19 @@ public class Door : Interactable
                 Debug.Log(GameManager.instance.currentPrimary);
                 locked = false;
             }
+        }
+
+        if (extraction && !extracted)
+        {
+            currentExtractionTimer -= Time.deltaTime;
+            GameManager.instance.extractionTimerUI.text = "" + (int) currentExtractionTimer;
+            if (currentExtractionTimer <= 0)
+            {
+                locked = false;
+                OpenDoor();
+                extracted = true;
+            }
+                
         }
 
         if (opening)
