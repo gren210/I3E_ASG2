@@ -86,7 +86,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactText: 
   fireCooldown: 0.5
-  damage: 63
+  damage: 76
   bulletRange: 10000000
   isFullAuto: 0
   gunShot: {fileID: 8300000, guid: aec85747a2ddcd04fa6c2d9006c49c9e, type: 3}
@@ -104,7 +104,7 @@ MonoBehaviour:
   muzzleFlash: {fileID: 2592132703005360161}
   bullet: {fileID: 5806001557802438499, guid: 4e69ae6eb3ffb5c4caedca589a27fc7f, type: 3}
   bulletSpeed: 60
-  ammoCount: 6
+  ammoCount: 8
   reloadTime: 1.1
   reloading: 0
   currentAmmoCount: 0

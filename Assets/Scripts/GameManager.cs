@@ -57,6 +57,9 @@ public class GameManager : MonoBehaviour
 
     public int healCount;
 
+    [HideInInspector]
+    public int savedHealCount;
+
     public int healAmount;
 
     public GameObject allGameUI;
@@ -85,6 +88,16 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public GameObject currentGrenadeIcon;
 
+    public GameObject[] primaryPrefabs;
+
+    [HideInInspector]
+    public GameObject savedPrimary;
+
+    public GameObject[] grenadePrefabs;
+
+    [HideInInspector]
+    public GameObject savedGrenade;
+
     public AudioSource[] BGM;
 
     [HideInInspector]
@@ -97,6 +110,8 @@ public class GameManager : MonoBehaviour
     public AudioSource throwSound;
 
     public AudioSource healSound;
+
+    public AudioSource deathSound;
 
     public GameObject pauseMenu;
 
@@ -111,7 +126,22 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI extractionTimerUI;
 
+    [HideInInspector]
+    public GameObject currentCheckpoint;
 
+    [HideInInspector]
+    public bool hasRestartedCheckpoint;
+
+    float spawnTimer = 0;
+
+    [HideInInspector]
+    public int currentScene;
+
+    [HideInInspector]
+    public bool hasRestarted = false;
+
+    [HideInInspector]
+    public bool isImmune;
 
     private void Awake()
     {
@@ -147,6 +177,7 @@ public class GameManager : MonoBehaviour
         }
         if (playerHealth <= 0 && !hasDied)
         {
+            deathSound.Play();
             hasDied = true;
             AudioListener.pause = true;
             Cursor.lockState = CursorLockMode.None;
@@ -155,6 +186,17 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0f;
             DisableInput();
         }
+
+        //if (hasRestartedCheckpoint)
+        //{
+            
+            //spawnTimer += Time.deltaTime;
+            //if (spawnTimer > Time.deltaTime*5)
+            //{
+                //GameManager.instance.hasRestartedCheckpoint = false;
+                //spawnTimer = 0;
+            //}
+        //}
 
     }
 
@@ -202,6 +244,17 @@ public class GameManager : MonoBehaviour
         playerObject.GetComponent<FirstPersonController>().enabled = true;
         playerObject.GetComponent<PlayerInput>().enabled = true;
         playerObject.GetComponent<Rigidbody>().isKinematic = false;
+    }
+    public void PersistItems()
+    {
+        if (currentPrimary != null)
+        {
+            currentPrimary.transform.SetParent(gameObject.transform, false);
+        }
+        if (currentGrenade != null)
+        {
+            currentGrenade.transform.SetParent(gameObject.transform, false);
+        }
     }
 
     //public void IncreaseScore(int scoreToAdd)

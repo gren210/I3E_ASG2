@@ -68,6 +68,7 @@ public class Door : Interactable
     // Update is called once per frame
     void Update()
     {
+
         if (SceneManager.GetActiveScene().buildIndex == 6)
         {
             if (GameManager.instance.currentPrimary != null && GameManager.instance.currentGrenade != null && GameManager.instance.healCount > 0)

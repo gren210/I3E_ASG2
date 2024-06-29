@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Boss : MonoBehaviour
 {
@@ -14,8 +13,16 @@ public class Boss : MonoBehaviour
     [SerializeField]
     float enemySpeed;
 
-    [SerializeField]
-    public float enemyHealth = 100;
+    public float enemyHealth;
+
+    [HideInInspector]
+    public float currentEnemyHealth;
+
+    public GameObject healthBar;
+
+    public Image healthBarGreen;
+
+    bool showHealthBar = false;
 
     [SerializeField]
     float enemyDamage = 5;
@@ -56,11 +63,23 @@ public class Boss : MonoBehaviour
     [SerializeField]
     int stopMusicIndex;
 
+    [SerializeField]
+    AudioSource roarSound;
+
+    [SerializeField]
+    AudioSource smashSound;
+
+    [SerializeField]
+    AudioClip deathSound;
+
+    bool isChasing = false;
+
     private void Start()
     {
         animator = gameObject.GetComponent<Animator>();
         currentTimer = 0;
         enemy.speed = enemySpeed;
+        currentEnemyHealth = enemyHealth;
     }
 
 
@@ -96,6 +115,7 @@ public class Boss : MonoBehaviour
                     GameManager.instance.playerHealth -= enemyDamage;
                     GameManager.instance.UpdateHealth();
                     attacked = true;
+                    smashSound.Play();
                 }
                 if(currentTimer >= damageTimer)
                 {
@@ -103,12 +123,17 @@ public class Boss : MonoBehaviour
                     currentTimer = 0;
                     attacked = false;
                     currentPlayerLocation = null;
-                    Debug.Log("bruh");
+                    isChasing = false;
                 }
 
             }
             else
             {
+                if (!isChasing)
+                {
+                    roarSound.Play();
+                    isChasing = true;
+                }
                 //currentTimer += Time.deltaTime;
                 if (currentDistance <= damageDistance && currentTimer >= damageTimer)
                 {
@@ -132,8 +157,20 @@ public class Boss : MonoBehaviour
             }
         }
 
-        if (enemyHealth <= 0) 
+        if (currentEnemyHealth < enemyHealth)
         {
+            if (!showHealthBar)
+            {
+                showHealthBar = true;
+                healthBar.SetActive(true);
+                healthBarGreen.fillAmount = currentEnemyHealth / enemyHealth;
+            }
+            healthBar.transform.LookAt(healthBar.transform.position + GameManager.instance.playerCamera.forward);
+        }
+
+        if (currentEnemyHealth <= 0) 
+        {
+            AudioSource.PlayClipAtPoint(deathSound,transform.position);
             GameManager.instance.BGM[stopMusicIndex].Stop();
             GameManager.instance.BGM[playMusicIndex].Play();
             Destroy(gameObject);

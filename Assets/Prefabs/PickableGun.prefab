@@ -93,6 +93,7 @@ MonoBehaviour:
   gunAudioSource: {fileID: 2920353386860326243}
   hitSound: {fileID: 8300000, guid: d4c949f87208dda49aeeb8abafb92ef3, type: 3}
   reloadSound: {fileID: 348240903553688646}
+  isReloading: 0
   gunAudio: {fileID: 3457640555307705561, guid: fc86614cc845e8d4e86b087f6c79d29c,
     type: 3}
   swapThrowForce: 150
@@ -142,7 +143,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3248005976916762292}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9470ce3b60932ad45b6af2483db0e661, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

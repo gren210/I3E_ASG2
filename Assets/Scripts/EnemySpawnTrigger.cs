@@ -12,6 +12,9 @@ public class EnemySpawnTrigger : MonoBehaviour
     [SerializeField]
     bool instantDetect;
 
+    [SerializeField]
+    bool bossTrigger;
+
     void Start()
     {
         
@@ -25,6 +28,13 @@ public class EnemySpawnTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (bossTrigger)
+        {
+            GameManager.instance.currentBGM.Stop();
+            GameManager.instance.currentBGM = GameManager.instance.BGM[10];
+            GameManager.instance.currentBGM.Play();
+        }
+
         if (other.gameObject.tag == "Player")
         {
             foreach (GameObject enemy in enemies)

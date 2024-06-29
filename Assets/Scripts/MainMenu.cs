@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Audio;
 
 public class MainMenu : MonoBehaviour
 {
@@ -20,8 +22,21 @@ public class MainMenu : MonoBehaviour
 
     bool startGame;
 
+    public AudioMixer volumeMixer;
+
+
+    [SerializeField]
+    Slider sfxVolumeSlider;
+
+    [SerializeField]
+    Slider musicVolumeSlider;
+
     private void Start()
     {
+        if (GameManager.instance.currentBGM != null)
+        {
+            GameManager.instance.currentBGM.Stop();
+        }
         GameManager.instance.playerHealth = GameManager.instance.setPlayerHealth;
         GameManager.instance.currentEquippable = null;
         GameManager.instance.currentGrenade = null;
@@ -50,7 +65,7 @@ public class MainMenu : MonoBehaviour
         if (!GameManager.instance.firstLoad)
         {
             transitionAnimator.SetTrigger("Start");
-            
+
         }
         else
         {
@@ -88,6 +103,16 @@ public class MainMenu : MonoBehaviour
     public void Options()
     {
 
+    }
+
+    public void ChangeSFXVolume(float volume)
+    {
+        volumeMixer.SetFloat("sfxVol", volume);
+    }
+
+    public void ChangeMusicVolume(float volume)
+    {
+        volumeMixer.SetFloat("musicVol", volume);
     }
 
 

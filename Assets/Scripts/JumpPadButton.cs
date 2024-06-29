@@ -9,7 +9,7 @@ public class JumpPadButton : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            other.gameObject.GetComponent<FirstPersonController>().JumpHeight = 50f;
+            other.gameObject.GetComponent<FirstPersonController>().JumpHeight = 70f;
             other.gameObject.GetComponent<Player>().jumpText.gameObject.SetActive(true);
         }
 

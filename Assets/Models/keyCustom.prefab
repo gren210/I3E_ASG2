@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7791486788655378091, guid: 730c839b21f246a4ca7dfa7bd8f2b93a, type: 3}
+  - {fileID: 2100000, guid: 28b5441b08b14ae44bdc609ae07606df, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -130,7 +130,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e747ec835b5c5c4abe15a8b804cd6f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactText: 
   linkedDoor: {fileID: 0}
+  pickupSound: {fileID: 8300000, guid: 54b315d70c2ec354aa24ddcb07519281, type: 3}
 --- !u!65 &7798612802731016365
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -213,7 +215,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7791486788655378091, guid: 730c839b21f246a4ca7dfa7bd8f2b93a, type: 3}
+  - {fileID: 2100000, guid: 28b5441b08b14ae44bdc609ae07606df, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

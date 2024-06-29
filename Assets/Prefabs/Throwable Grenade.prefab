@@ -57,6 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc886d0b0308a64089f2172dacc4b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactText: 
   grenadeDistance: 200
   delay: 2
   effect: {fileID: 9106393578673363630}
@@ -118,7 +119,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2190142507114214862}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 77662891db6da1345a2798300218ed57, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

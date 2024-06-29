@@ -71,8 +71,7 @@ public class Gun : Interactable
     [HideInInspector]
     public int currentAmmoCount;
 
-    [SerializeField]
-    int iconIndex;
+    public int iconIndex;
 
     // Start is called before the first frame update
     void Start()
@@ -146,7 +145,8 @@ public class Gun : Interactable
                     else if (hitInfo.transform.TryGetComponent<Boss>(out Boss boss))
                     {
                         Debug.Log("Boss is shot");
-                        boss.enemyHealth -= damage;
+                        boss.currentEnemyHealth -= damage;
+                        boss.healthBarGreen.fillAmount = boss.currentEnemyHealth / boss.enemyHealth;
                         AudioSource.PlayClipAtPoint(hitSound, hitInfo.point);
                     }
                 }

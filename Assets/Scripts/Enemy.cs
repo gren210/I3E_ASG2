@@ -73,15 +73,17 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     bool attacking = false;
 
+    Vector3 originalSpawn;
+
     private void Start()
     {
+        originalSpawn = transform.position;
         animator = gameObject.GetComponent<Animator>();
         currentTimer = damageTimer;
         enemy.speed = enemySpeed;
         playerTarget = GameManager.instance.playerObject;
         currentRoarTimer = 0;
         currentEnemyHealth = enemyHealth;
-
     }
 
 
@@ -93,12 +95,19 @@ public class Enemy : MonoBehaviour
         NavMeshHit hitInfo;
         bool obstacle = enemy.Raycast(playerTarget.transform.position, out hitInfo);
 
+        if(GameManager.instance.hasRestartedCheckpoint)
+        {
+            Destroy(gameObject);
+            //currentEnemyHealth = enemyHealth;
+            //enemy.Warp(originalSpawn);
+        }
+
         if (!obstacle)
         {
             detected = true;
         }
 
-        if (detected)
+        if (detected && !GameManager.instance.hasRestartedCheckpoint)
         {
             currentRoarTimer += Time.deltaTime;
             idleSound.Stop();
@@ -129,7 +138,7 @@ public class Enemy : MonoBehaviour
                 enemy.isStopped = true;
                 animator.SetBool("Run", false);
                 animator.SetBool("Attack", true);
-                if (currentTimer >= damageTimer)
+                if (currentTimer >= damageTimer && !GameManager.instance.isImmune)
                 {
                     GameManager.instance.playerHealth -= enemyDamage;
                     GameManager.instance.UpdateHealth();

@@ -8,6 +8,9 @@ public class Key : Interactable
 
     public GameObject linkedDoor;
 
+    [SerializeField]
+    AudioClip pickupSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +26,7 @@ public class Key : Interactable
     public override void Interact(Player thePlayer)
     {
         base.Interact(thePlayer);
+        AudioSource.PlayClipAtPoint(pickupSound, transform.position);
         linkedDoor.GetComponent<Door>().locked = false;
         Destroy(gameObject);
     }

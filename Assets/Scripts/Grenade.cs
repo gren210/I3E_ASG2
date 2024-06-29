@@ -44,12 +44,11 @@ public class Grenade : Interactable
     [SerializeField]
     float swapThrowForce;
 
-    [SerializeField]
-    int iconIndex;
+    public int iconIndex;
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+
     }
     private void GrenadeExplode()
     {
@@ -65,16 +64,16 @@ public class Grenade : Interactable
             if (collider.gameObject.tag == "Enemy")
             {
                 Enemy enemy = collider.gameObject.GetComponent<Enemy>();
-                collider.gameObject.GetComponent<Enemy>().currentEnemyHealth -= explodeDamage;
+                enemy.currentEnemyHealth -= explodeDamage;
                 enemy.healthBarGreen.fillAmount = enemy.currentEnemyHealth / enemy.enemyHealth;
             }
-            if (collider.gameObject.tag == "Boss")
+            else if (collider.gameObject.tag == "Boss")
             {
                 Boss enemy = collider.gameObject.GetComponent<Boss>();
                 enemy.enemyHealth -= explodeDamage;
-                //enemy.healthBarGreen.fillAmount = enemy.EnemyHealth / enemy.enemyHealth;
+                enemy.healthBarGreen.fillAmount = enemy.currentEnemyHealth / enemy.enemyHealth;
             }
-            else if (collider.gameObject.tag == "Player")
+            else if (collider.gameObject.tag == "Player" && !GameManager.instance.isImmune)
             {
                 GameManager.instance.playerHealth -= explodeDamage;
                 GameManager.instance.UpdateHealth();

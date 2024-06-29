@@ -15,6 +15,9 @@ public class PlaceCrystal : Interactable
     [SerializeField]
     Door linkedDoor;
 
+    [SerializeField]
+    AudioSource placeCrystalSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +33,7 @@ public class PlaceCrystal : Interactable
     public override void Interact(Player thePlayer)
     {
         base.Interact(thePlayer);
+        placeCrystalSound.Play();
         Instantiate(crystal, crystalPosition.position, crystalPosition.rotation);
         linkedDoor.locked = false;
     }
