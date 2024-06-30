@@ -46,13 +46,8 @@ public class Grenade : Interactable
 
     public int iconIndex;
 
-    private void Awake()
-    {
-
-    }
     private void GrenadeExplode()
     {
-        //Instantiate(effect, transform.position, transform.rotation);
         effect.GetComponent<ParticleSystem>().Play();
 
         AudioSource.PlayClipAtPoint(grenadeSound, transform.position);
@@ -63,15 +58,11 @@ public class Grenade : Interactable
         { 
             if (collider.gameObject.tag == "Enemy")
             {
-                Enemy enemy = collider.gameObject.GetComponent<Enemy>();
-                enemy.currentEnemyHealth -= explodeDamage;
-                enemy.healthBarGreen.fillAmount = enemy.currentEnemyHealth / enemy.enemyHealth;
+                UpdateEnemyHealth(collider.gameObject, explodeDamage);
             }
             else if (collider.gameObject.tag == "Boss")
             {
-                Boss enemy = collider.gameObject.GetComponent<Boss>();
-                enemy.enemyHealth -= explodeDamage;
-                enemy.healthBarGreen.fillAmount = enemy.currentEnemyHealth / enemy.enemyHealth;
+                UpdateEnemyHealth(collider.gameObject, explodeDamage);
             }
             else if (collider.gameObject.tag == "Player" && !GameManager.instance.isImmune)
             {
@@ -136,6 +127,11 @@ public class Grenade : Interactable
     public override void Interact(Player thePlayer)
     {
         base.Interact(thePlayer);
+        PickupCollectible(gameObject, iconIndex,GameManager.instance.currentGrenade);
+    }
+
+    protected override void PickupCollectible(GameObject collectible, int iconIndex, GameObject currentCollectible)
+    {
         if (GameManager.instance.currentGrenade != null)
         {
             if (GameManager.instance.currentGrenade.activeSelf == false)
@@ -147,24 +143,9 @@ public class Grenade : Interactable
             GameManager.instance.currentGrenade.GetComponent<Rigidbody>().isKinematic = false;
             GameManager.instance.currentGrenade.GetComponent<Rigidbody>().AddForce(swapThrowForce * GameManager.instance.playerCamera.transform.forward);
         }
-        if (GameManager.instance.currentEquippable != null && GameManager.instance.currentEquippable != GameManager.instance.currentGrenade)
-        {
-            GameManager.instance.currentEquippable.SetActive(false);
-        }
-        gameObject.transform.SetParent(GameManager.instance.playerCamera.transform, false);
-        gameObject.GetComponent<SphereCollider>().enabled = false;
-        gameObject.GetComponent<Rigidbody>().isKinematic = true;
-        GameManager.instance.currentGrenade = gameObject;
-        GameManager.instance.currentEquippable = gameObject;
-        GameManager.instance.currentEquippable.SetActive(true);
-        gameObject.transform.position = GameManager.instance.equipPosition.transform.position;
-        gameObject.transform.eulerAngles = GameManager.instance.equipPosition.transform.eulerAngles;
+        base.PickupCollectible(collectible, iconIndex, currentCollectible);
+        collectible.GetComponent<SphereCollider>().enabled = false;
+        GameManager.instance.currentGrenade = collectible;
         GameManager.instance.IconSwitchGrenade(iconIndex);
-        GameManager.instance.swapItemSound.Play();
     }
-
-    //public override void ShakeCamera(float shakeIntensity, float shakeFrequency)
-    //{
-        //base.ShakeCamera(shakeIntensity,shakeFrequency);
-    //}
 }

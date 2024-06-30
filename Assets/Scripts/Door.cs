@@ -73,6 +73,7 @@ public class Door : Interactable
         {
             if (GameManager.instance.currentPrimary != null && GameManager.instance.currentGrenade != null && GameManager.instance.healCount > 0)
             {
+                GameManager.instance.objectiveText.text = GameManager.instance.objectiveStrings[6];
                 Debug.Log(GameManager.instance.currentPrimary);
                 locked = false;
             }
@@ -84,6 +85,7 @@ public class Door : Interactable
             GameManager.instance.extractionTimerUI.text = "" + (int) currentExtractionTimer;
             if (currentExtractionTimer <= 0)
             {
+                GameManager.instance.objectiveText.text = GameManager.instance.objectiveStrings[11];
                 locked = false;
                 OpenDoor();
                 extracted = true;

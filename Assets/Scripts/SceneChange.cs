@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SceneChange : MonoBehaviour
+public class SceneChange : ScriptManager
 {
     public int sceneIndex;
 
@@ -37,24 +37,26 @@ public class SceneChange : MonoBehaviour
         GameManager.instance.isImmune = false;
         AudioListener.pause = false;
 
-        if(GameManager.instance.currentPrimary != null)
-        {
-            GameManager.instance.savedPrimary = GameManager.instance.primaryPrefabs[GameManager.instance.currentPrimary.GetComponent<Gun>().iconIndex];
-        }
+        //if(GameManager.instance.currentPrimary != null)
+        //{
+            //GameManager.instance.savedPrimary = GameManager.instance.primaryPrefabs[GameManager.instance.currentPrimary.GetComponent<Gun>().iconIndex];
+        //}
 
-        if (GameManager.instance.currentGrenade != null)
-        {
-            GameManager.instance.savedGrenade = GameManager.instance.grenadePrefabs[GameManager.instance.currentGrenade.GetComponent<Grenade>().iconIndex];
-        }
+        //if (GameManager.instance.currentGrenade != null)
+        //{
+            //GameManager.instance.savedGrenade = GameManager.instance.grenadePrefabs[GameManager.instance.currentGrenade.GetComponent<Grenade>().iconIndex];
+        //}
 
         GameManager.instance.currentScene = SceneManager.GetActiveScene().buildIndex;
         GameManager.instance.savedHealCount = GameManager.instance.healCount;
+        GameManager.instance.objectiveText.text = GameManager.instance.objectiveStrings[GameManager.instance.currentScene];
         GameManager.instance.currentCheckpoint = null;
-        GameManager.instance.UpdateHealth();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
         GameManager.instance.currentBGM = GameManager.instance.BGM[sceneIndex - 1];
         GameManager.instance.currentBGM.Play();
+        
+        GameManager.instance.UpdateHealth();
+        CursorLock(true);
+        
         currentTimer = 0;
         changeScene = false;
         transition = GameManager.instance.transition;
@@ -65,16 +67,19 @@ public class SceneChange : MonoBehaviour
         }
         if (SceneManager.GetActiveScene().buildIndex == 6)
         {
+            GameManager.instance.objectiveText.text = GameManager.instance.objectiveStrings[0];
             GameManager.instance.UI.SetActive(true);
-            GameManager.instance.currentBGM.Stop();
-            GameManager.instance.currentBGM = GameManager.instance.BGM[5];
-            GameManager.instance.currentBGM.Play();
+            //GameManager.instance.currentBGM.Stop();
+            //GameManager.instance.currentBGM = GameManager.instance.BGM[5];
+            //GameManager.instance.currentBGM.Play();
+            ChangeMusic(5);
         }
         if (SceneManager.GetActiveScene().buildIndex == 7)
         {
-            GameManager.instance.currentBGM.Stop();
-            GameManager.instance.currentBGM = GameManager.instance.BGM[8];
-            GameManager.instance.currentBGM.Play();
+            //GameManager.instance.currentBGM.Stop();
+            //GameManager.instance.currentBGM = GameManager.instance.BGM[8];
+            //GameManager.instance.currentBGM.Play();
+            ChangeMusic(8);
             GameManager.instance.UI.SetActive(false);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -109,7 +114,10 @@ public class SceneChange : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        changeScene = true;
+        if(other.transform.tag == "Player")
+        {
+            changeScene = true;
+        }
     }
 
     //private void PersistItems()

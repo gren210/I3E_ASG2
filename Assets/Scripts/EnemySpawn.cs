@@ -53,12 +53,6 @@ public class EnemySpawn : MonoBehaviour
             SpawnEnemy();
             hasSpawned = true;
         }
-        
-        //if (GameManager.instance.hasRestartedCheckpoint && !bossFight)
-        //{
-            //SpawnEnemy();
-            //hasSpawned = true;
-        //}
     }
 
     public void SpawnEnemy()

@@ -2,13 +2,10 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
-public class Boss : MonoBehaviour
+public class Boss : ScriptManager
 {
     [SerializeField]
     GameObject playerTarget;
-
-    [SerializeField]
-    float spawnDistance;
 
     [SerializeField]
     float enemySpeed;
@@ -33,11 +30,7 @@ public class Boss : MonoBehaviour
     [SerializeField]
     float damageTimer = 1f;
 
-    //private GameObject playerObject;
-
     private float currentTimer;
-
-    //private Player currentPlayer;
 
     public NavMeshAgent enemy;
 
@@ -134,7 +127,6 @@ public class Boss : MonoBehaviour
                     roarSound.Play();
                     isChasing = true;
                 }
-                //currentTimer += Time.deltaTime;
                 if (currentDistance <= damageDistance && currentTimer >= damageTimer)
                 {
                     enemy.isStopped = true;
@@ -170,11 +162,16 @@ public class Boss : MonoBehaviour
 
         if (currentEnemyHealth <= 0) 
         {
-            AudioSource.PlayClipAtPoint(deathSound,transform.position);
-            GameManager.instance.BGM[stopMusicIndex].Stop();
-            GameManager.instance.BGM[playMusicIndex].Play();
-            Destroy(gameObject);
-            Instantiate(key, gameObject.transform.position,gameObject.transform.rotation);
+            KillEnemy(deathSound, gameObject);
         }
+    }
+
+    protected override void KillEnemy(AudioClip sound, GameObject enemy)
+    {
+        GameManager.instance.objectiveText.text = GameManager.instance.objectiveStrings[8];
+        Instantiate(key, enemy.transform.position, enemy.transform.rotation);
+        ChangeMusic(playMusicIndex);
+        base.KillEnemy(sound, enemy);
+
     }
 }

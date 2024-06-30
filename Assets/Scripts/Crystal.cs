@@ -40,10 +40,13 @@ public class Crystal : Interactable
 
     public override void Interact(Player thePlayer)
     {
+        GameManager.instance.objectiveText.text = GameManager.instance.objectiveStrings[7];
         base.Interact(thePlayer);
         linkedDoor.CloseDoor();
-        GameManager.instance.BGM[stopMusicIndex].Stop();
-        GameManager.instance.BGM[playMusicIndex].Play();
+        //GameManager.instance.currentBGM.Stop();
+        //GameManager.instance.currentBGM = GameManager.instance.BGM[playMusicIndex];
+        //GameManager.instance.currentBGM.Play();
+        ChangeMusic(playMusicIndex);
         foreach (GameObject enemy in enemies)
         {
             if (enemy.GetComponent<EnemySpawn>().isSpawnOverTime)

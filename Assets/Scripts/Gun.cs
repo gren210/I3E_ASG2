@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-//using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -110,11 +109,6 @@ public class Gun : Interactable
         }
     }
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
-
     public void Shoot(Player thePlayer)
     {
         if (currentAmmoCount != 0 && !reloading)
@@ -123,7 +117,6 @@ public class Gun : Interactable
             if (currentCooldown <= 0f)
             {
                 bool hit = Physics.Raycast(thePlayer.playerCamera.position, thePlayer.playerCamera.forward, out hitInfo, bulletRange);
-                //gunAudioSource.PlayOneShot(gunShot, 0.5f);
                 GameObject currentAudio = Instantiate(gunAudio);
                 Destroy(currentAudio, 1f);
                 muzzleFlash.GetComponent<ParticleSystem>().Play();
@@ -137,16 +130,12 @@ public class Gun : Interactable
                 {
                     if (hitInfo.transform.TryGetComponent<Enemy>(out Enemy enemy))
                     {
-                        Debug.Log("Enemy is shot");
-                        enemy.currentEnemyHealth -= damage;
-                        enemy.healthBarGreen.fillAmount = enemy.currentEnemyHealth / enemy.enemyHealth;
+                        UpdateEnemyHealth(hitInfo.transform.gameObject, damage);
                         AudioSource.PlayClipAtPoint(hitSound, hitInfo.point);
                     }
                     else if (hitInfo.transform.TryGetComponent<Boss>(out Boss boss))
                     {
-                        Debug.Log("Boss is shot");
-                        boss.currentEnemyHealth -= damage;
-                        boss.healthBarGreen.fillAmount = boss.currentEnemyHealth / boss.enemyHealth;
+                        UpdateEnemyHealth(hitInfo.transform.gameObject, damage);
                         AudioSource.PlayClipAtPoint(hitSound, hitInfo.point);
                     }
                 }
@@ -165,6 +154,13 @@ public class Gun : Interactable
 
     public override void Interact(Player thePlayer)
     {
+        base.Interact(thePlayer);
+        PickupCollectible(gameObject, iconIndex, GameManager.instance.currentPrimary);
+
+    }
+
+    protected override void PickupCollectible(GameObject collectible, int iconIndex, GameObject currentCollectible)
+    {
         if (GameManager.instance.currentPrimary != null)
         {
             if (GameManager.instance.currentPrimary.activeSelf == false)
@@ -176,25 +172,9 @@ public class Gun : Interactable
             GameManager.instance.currentPrimary.GetComponent<Rigidbody>().isKinematic = false;
             GameManager.instance.currentPrimary.GetComponent<Rigidbody>().AddForce(swapThrowForce * GameManager.instance.playerCamera.transform.forward);
         }
-        if(GameManager.instance.currentEquippable != null && GameManager.instance.currentEquippable != GameManager.instance.currentPrimary)
-        {
-            GameManager.instance.currentEquippable.SetActive(false);
-        }
-        gameObject.transform.SetParent(thePlayer.playerCamera.transform, false);
-
-        gameObject.GetComponent<BoxCollider>().enabled = false;
-        gameObject.GetComponent<Rigidbody>().isKinematic = true;
-
-        GameManager.instance.currentPrimary = gameObject;
-        GameManager.instance.currentEquippable = gameObject;
-        GameManager.instance.currentEquippable.SetActive(true);
-
-        gameObject.transform.position = GameManager.instance.equipPosition.transform.position;
-        gameObject.transform.eulerAngles = GameManager.instance.equipPosition.transform.eulerAngles;
-
+        base.PickupCollectible(collectible, iconIndex, currentCollectible);
+        collectible.GetComponent<BoxCollider>().enabled = false;
+        GameManager.instance.currentPrimary = collectible;
         GameManager.instance.IconSwitchPrimary(iconIndex);
-        GameManager.instance.swapItemSound.Play();
-
     }
-
 }

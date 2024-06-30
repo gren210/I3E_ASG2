@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawnTrigger : MonoBehaviour
+public class EnemySpawnTrigger : ScriptManager
 {
     // Start is called before the first frame update
 
@@ -30,9 +30,11 @@ public class EnemySpawnTrigger : MonoBehaviour
     {
         if (bossTrigger)
         {
-            GameManager.instance.currentBGM.Stop();
-            GameManager.instance.currentBGM = GameManager.instance.BGM[10];
-            GameManager.instance.currentBGM.Play();
+            GameManager.instance.objectiveText.text = GameManager.instance.objectiveStrings[9];
+            //GameManager.instance.currentBGM.Stop();
+            //GameManager.instance.currentBGM = GameManager.instance.BGM[10];
+            //GameManager.instance.currentBGM.Play();
+            ChangeMusic(10);
         }
 
         if (other.gameObject.tag == "Player")

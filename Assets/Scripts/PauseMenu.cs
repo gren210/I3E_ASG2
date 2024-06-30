@@ -7,7 +7,7 @@ using StarterAssets;
 using UnityEngine.InputSystem;
 using UnityEditor;
 
-public class PauseMenu : MonoBehaviour
+public class PauseMenu : ScriptManager
 {
 
 
@@ -30,7 +30,6 @@ public class PauseMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //GameManager.instance.pauseMenu.SetActive(false);
         transition = GameManager.instance.transition;
         transitionAnimator = GameManager.instance.transitionAnimator;
         currentTimer = 0;
@@ -49,7 +48,6 @@ public class PauseMenu : MonoBehaviour
             currentTimer += Time.deltaTime;
             if (currentTimer >= transitionTime)
             {
-                //mainMenuBGM.Stop();
                 GameManager.instance.pauseMenu.SetActive(false);
                 goBack = false;
                 currentTimer = 0;
@@ -66,8 +64,6 @@ public class PauseMenu : MonoBehaviour
             if (!changedScene)
             {
                 transitionAnimator.SetTrigger("End");
-                GameManager.instance.playerObject.GetComponent<FirstPersonController>().enabled = false;
-                GameManager.instance.playerObject.GetComponent<Rigidbody>().isKinematic = true;
                 changedScene = true;
             }
             currentTimer += Time.deltaTime;
@@ -85,9 +81,8 @@ public class PauseMenu : MonoBehaviour
     public void ResumeGame()
     {
         AudioListener.pause = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        GameManager.instance.EnableInput();
+        CursorLock(true);
+        LockInput(false);
         GameManager.instance.pauseMenu.SetActive(false);
         Time.timeScale = 1f;
     }
@@ -95,8 +90,10 @@ public class PauseMenu : MonoBehaviour
     public void RestartLevel()
     {
         Time.timeScale = 1f;
+        GameManager.instance.currentBGM.Stop();
         GameManager.instance.pauseMenu.SetActive(false);
-        GameManager.instance.DisableInput();
+        GameManager.instance.gameOverUI.SetActive(false);
+        LockInput(true);
         GameManager.instance.playerHealth = 100;
         GameManager.instance.healCount = GameManager.instance.savedHealCount;
         changeScene = true;

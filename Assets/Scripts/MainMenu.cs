@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Audio;
 
-public class MainMenu : MonoBehaviour
+public class MainMenu : ScriptManager
 {
     GameObject transition;
 
@@ -23,7 +23,6 @@ public class MainMenu : MonoBehaviour
     bool startGame;
 
     public AudioMixer volumeMixer;
-
 
     [SerializeField]
     Slider sfxVolumeSlider;
@@ -100,11 +99,6 @@ public class MainMenu : MonoBehaviour
         startGame = true;
     }
 
-    public void Options()
-    {
-
-    }
-
     public void ChangeSFXVolume(float volume)
     {
         volumeMixer.SetFloat("sfxVol", volume);
@@ -115,25 +109,9 @@ public class MainMenu : MonoBehaviour
         volumeMixer.SetFloat("musicVol", volume);
     }
 
-
-    public void Credits()
-    {
-
-    }
-
-    public void HowToPlay()
-    {
-
-    }
-
     public void QuitGame()
     {
         Application.Quit();
-    }
-    
-    public void Back()
-    {
-
     }
 
 }

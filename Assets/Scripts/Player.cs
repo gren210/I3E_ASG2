@@ -4,8 +4,9 @@ using UnityEngine;
 using TMPro;
 using Cinemachine;
 using UnityEngine.SceneManagement;
+using System.Runtime.CompilerServices;
 
-public class Player : MonoBehaviour
+public class Player : ScriptManager
 {
     public static Player instance;
 
@@ -90,12 +91,10 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        //Debug.Log(GameManager.instance.playerObject);
         Debug.DrawLine(playerCamera.position, playerCamera.position + (playerCamera.forward * interactionDistance), Color.red);
         RaycastHit hitInfo;
         if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hitInfo, interactionDistance))
         {
-            //Debug.Log(hitInfo.transform.name);
             hitInfo.transform.TryGetComponent<GiftBox>(out currentGiftBox);
             hitInfo.transform.TryGetComponent<Gun>(out currentGunPickup);
             hitInfo.transform.TryGetComponent<Grenade>(out currentGrenadePickup);
@@ -128,10 +127,6 @@ public class Player : MonoBehaviour
 
     void OnInteract()
     {
-        //if(currentInteractable != null)
-        //{
-            //currentInteractable.Interact(this);
-        //}
         if (currentGiftBox != null)
         {
             currentGiftBox.Interact(this);
@@ -171,28 +166,18 @@ public class Player : MonoBehaviour
         {
             currentPlaceCrystal.Interact(this);
         }
-
     }
 
 
     void OnPause()
     {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        //SceneManager.GetActiveScene().buildIndex != 0
+        CursorLock(false);
         if (!GameManager.instance.pauseMenu.activeSelf)
         {
             AudioListener.pause = true;
-            GameManager.instance.DisableInput();
+            LockInput(true);
             GameManager.instance.pauseMenu.SetActive(true);
             Time.timeScale = 0f;
-        }
-        else
-        {
-            AudioListener.pause = false;
-            GameManager.instance.EnableInput();
-            GameManager.instance.pauseMenu.SetActive(true);
-            Time.timeScale = 1f;
         }
 
     }
@@ -204,12 +189,8 @@ public class Player : MonoBehaviour
         {
             if (GameManager.instance.currentEquippable != null)
             {
-                if (GameManager.instance.currentEquippable == GameManager.instance.currentPrimary) //&& !GameManager.instance.currentPrimary.GetComponent<Gun>().reloading)
+                if (GameManager.instance.currentEquippable == GameManager.instance.currentPrimary) 
                 {
-                    //if (GameManager.instance.currentPrimary.GetComponent<Gun>().isFullAuto)
-                    //{
-
-                    //}
                     GameManager.instance.currentPrimary.GetComponent<Gun>().Shoot(this);
                 }
                 else if (GameManager.instance.currentEquippable == GameManager.instance.currentGrenade)
@@ -232,13 +213,7 @@ public class Player : MonoBehaviour
     {
         if(GameManager.instance.currentEquippable != GameManager.instance.currentPrimary && (GameManager.instance.currentPrimary != null))
         {
-            if (GameManager.instance.readySwap == true && GameManager.instance.currentEquippable != null)
-            {
-                GameManager.instance.currentEquippable.SetActive(false);
-            }
-            GameManager.instance.currentEquippable = GameManager.instance.currentPrimary;
-            GameManager.instance.currentEquippable.SetActive(true);
-            GameManager.instance.swapItemSound.Play();
+            EquipCollectible(GameManager.instance.currentPrimary);
         }
     }
 
@@ -246,14 +221,19 @@ public class Player : MonoBehaviour
     {
         if(GameManager.instance.readySwap == true && !GameManager.instance.currentPrimary.GetComponent<Gun>().reloading && GameManager.instance.currentGrenade != null && GameManager.instance.currentEquippable != GameManager.instance.currentGrenade)
         {
-            if (GameManager.instance.currentEquippable != null)
-            {
-                GameManager.instance.currentEquippable.SetActive(false);
-            }
-            GameManager.instance.currentEquippable = GameManager.instance.currentGrenade;
-            GameManager.instance.currentEquippable.SetActive(true);
-            GameManager.instance.swapItemSound.Play();
+            EquipCollectible(GameManager.instance.currentGrenade);
         }
+    }
+
+    void EquipCollectible(GameObject currentCollectible)
+    {
+        if (GameManager.instance.currentEquippable != null)
+        {
+            GameManager.instance.currentEquippable.SetActive(false);
+        }
+        GameManager.instance.currentEquippable = currentCollectible;
+        GameManager.instance.currentEquippable.SetActive(true);
+        GameManager.instance.swapItemSound.Play();
     }
 
     void OnFlashlight()
@@ -285,13 +265,5 @@ public class Player : MonoBehaviour
 
         }
     }
-
-    //void OnAutoFire()
-    //{
-        //currentGun.GetComponent<Gun>().Shoot();
-    //}
-
-    
-
 }
 

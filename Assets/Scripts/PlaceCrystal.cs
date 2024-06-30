@@ -32,6 +32,7 @@ public class PlaceCrystal : Interactable
 
     public override void Interact(Player thePlayer)
     {
+        GameManager.instance.objectiveText.text = GameManager.instance.objectiveStrings[10];
         base.Interact(thePlayer);
         placeCrystalSound.Play();
         Instantiate(crystal, crystalPosition.position, crystalPosition.rotation);

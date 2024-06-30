@@ -9,7 +9,7 @@ using Unity.VisualScripting;
 using StarterAssets;
 using UnityEngine.InputSystem;
 
-public class GameManager : MonoBehaviour
+public class GameManager : ScriptManager
 {
     public static GameManager instance;
 
@@ -24,8 +24,6 @@ public class GameManager : MonoBehaviour
 
     public GameObject equipPosition;
 
-    //public GameObject currentFlashlight;
-
     [HideInInspector]
     public GameObject currentEquippable = null;
 
@@ -34,10 +32,6 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector]
     public CinemachineVirtualCamera virtualCamera;
-
-    //public GameObject equipParent;
-
-    //public bool isPrimary = false;
 
     [HideInInspector]
     public bool readySwap = true;
@@ -55,6 +49,7 @@ public class GameManager : MonoBehaviour
 
     public Animator transitionAnimator;
 
+    [HideInInspector]
     public int healCount;
 
     [HideInInspector]
@@ -76,6 +71,8 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI healText;
 
+    public TextMeshProUGUI objectiveText;
+
     [SerializeField]
     GameObject[] primaryIcons;
 
@@ -88,17 +85,9 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public GameObject currentGrenadeIcon;
 
-    public GameObject[] primaryPrefabs;
-
-    [HideInInspector]
-    public GameObject savedPrimary;
-
-    public GameObject[] grenadePrefabs;
-
-    [HideInInspector]
-    public GameObject savedGrenade;
-
     public AudioSource[] BGM;
+
+    public string[] objectiveStrings;
 
     [HideInInspector]
     public AudioSource currentBGM;
@@ -110,8 +99,6 @@ public class GameManager : MonoBehaviour
     public AudioSource throwSound;
 
     public AudioSource healSound;
-
-    public AudioSource deathSound;
 
     public GameObject pauseMenu;
 
@@ -163,9 +150,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //scoreText.text = "Score: 0";
 
-        Application.targetFrameRate = 240;
     }
 
     private void Update()
@@ -177,26 +162,13 @@ public class GameManager : MonoBehaviour
         }
         if (playerHealth <= 0 && !hasDied)
         {
-            deathSound.Play();
             hasDied = true;
             AudioListener.pause = true;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            CursorLock(false);
             gameOverUI.SetActive(true);
             Time.timeScale = 0f;
-            DisableInput();
+            LockInput(true);
         }
-
-        //if (hasRestartedCheckpoint)
-        //{
-            
-            //spawnTimer += Time.deltaTime;
-            //if (spawnTimer > Time.deltaTime*5)
-            //{
-                //GameManager.instance.hasRestartedCheckpoint = false;
-                //spawnTimer = 0;
-            //}
-        //}
 
     }
 
@@ -230,21 +202,6 @@ public class GameManager : MonoBehaviour
             currentGrenadeIcon.SetActive(true);
         }
     }
-
-    public void DisableInput()
-    {
-        playerObject.GetComponent<FirstPersonController>().enabled = false;
-        playerObject.GetComponent<PlayerInput>().enabled = false;
-        playerObject.GetComponent<Rigidbody>().isKinematic = true;
-    }
-
-    public void EnableInput()
-    {
-
-        playerObject.GetComponent<FirstPersonController>().enabled = true;
-        playerObject.GetComponent<PlayerInput>().enabled = true;
-        playerObject.GetComponent<Rigidbody>().isKinematic = false;
-    }
     public void PersistItems()
     {
         if (currentPrimary != null)
@@ -256,10 +213,4 @@ public class GameManager : MonoBehaviour
             currentGrenade.transform.SetParent(gameObject.transform, false);
         }
     }
-
-    //public void IncreaseScore(int scoreToAdd)
-    //{
-    //currentScore += scoreToAdd;
-    //scoreText.text = "Score: " + currentScore;
-    //}
 }

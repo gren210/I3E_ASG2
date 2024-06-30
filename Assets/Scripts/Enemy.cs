@@ -4,13 +4,10 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
-public class Enemy : MonoBehaviour
+public class Enemy : ScriptManager
 {
     [SerializeField]
     GameObject playerTarget;
-
-    [SerializeField]
-    float spawnDistance;
 
     [SerializeField]
     float enemySpeed;
@@ -176,8 +173,9 @@ public class Enemy : MonoBehaviour
 
         if (currentEnemyHealth <= 0) 
         {
-            AudioSource.PlayClipAtPoint(deathSound,gameObject.transform.position);
-            Destroy(gameObject);
+            //AudioSource.PlayClipAtPoint(deathSound,gameObject.transform.position);
+            //Destroy(gameObject);
+            KillEnemy(deathSound, gameObject);
         }
     }
 }
