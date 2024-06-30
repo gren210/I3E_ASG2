@@ -1,3 +1,9 @@
+/*
+ * Author: Thaqif Adly Bin Mazalan
+ * Date: 30/6/24
+ * Description: Handles grenade interactions.
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -5,47 +11,96 @@ using UnityEngine;
 
 public class Grenade : Interactable
 {
-    public string interactText;
-
+    /// <summary>
+    /// The distance the grenade is thrown.
+    /// </summary>
     [SerializeField]
     float grenadeDistance;
 
+    /// <summary>
+    /// The delay before the grenade explodes.
+    /// </summary>
     public float delay = 3f;
 
+    /// <summary>
+    /// Timer to track the grenade's delay.
+    /// </summary>
     float timer;
 
+    /// <summary>
+    /// The particle system for the grenade explosion effect.
+    /// </summary>
     public ParticleSystem effect;
 
+    /// <summary>
+    /// The radius where the grenade will affect entities.
+    /// </summary>
     public float explodeRadius = 50f;
 
+    /// <summary>
+    /// The damage dealt by the grenade explosion.
+    /// </summary>
     public float explodeDamage = 70f;
 
+    /// <summary>
+    /// Indicates whether the grenade has been thrown.
+    /// </summary>
     [HideInInspector]
     public bool thrown = false;
 
+    /// <summary>
+    /// Indicates whether the grenade has been set up for throwing.
+    /// </summary>
     bool set = true;
 
+    /// <summary>
+    /// Indicates whether the grenade has exploded.
+    /// </summary>
     bool exploded = false;
 
+    /// <summary>
+    /// The sound played when the grenade explodes.
+    /// </summary>
     [SerializeField]
     AudioClip grenadeSound;
 
+    /// <summary>
+    /// The duration of the camera shake effect.
+    /// </summary>
     [SerializeField]
     float shakeTimer;
 
+    /// <summary>
+    /// The starting value of the shake timer.
+    /// </summary>
     float shakeTimerStart;
 
+    /// <summary>
+    /// The intensity of the camera shake effect.
+    /// </summary>
     [SerializeField]
     float shakeIntensity;
 
+    /// <summary>
+    /// The frequency of the camera shake effect.
+    /// </summary>
     [SerializeField]
     float shakeFrequency;
 
+    /// <summary>
+    /// The force applied when swapping the grenade.
+    /// </summary>
     [SerializeField]
     float swapThrowForce;
 
+    /// <summary>
+    /// The index for the grenade icon.
+    /// </summary>
     public int iconIndex;
 
+    /// <summary>
+    /// Handles the grenade explosion effect, applying damage to nearby entities.
+    /// </summary>
     private void GrenadeExplode()
     {
         effect.GetComponent<ParticleSystem>().Play();
@@ -54,8 +109,8 @@ public class Grenade : Interactable
 
         Collider[] entities = Physics.OverlapSphere(transform.position, explodeRadius);
 
-        foreach (Collider collider in entities) 
-        { 
+        foreach (Collider collider in entities)
+        {
             if (collider.gameObject.tag == "Enemy")
             {
                 UpdateEnemyHealth(collider.gameObject, explodeDamage);
@@ -105,7 +160,7 @@ public class Grenade : Interactable
                     exploded = true;
                     gameObject.GetComponent<Rigidbody>().isKinematic = true;
                     gameObject.GetComponent<MeshFilter>().mesh = null;
-                    Destroy(gameObject,2f);
+                    Destroy(gameObject, 2f);
                     Destroy(effect, 2f);
                     ShakeCamera(shakeIntensity, shakeFrequency);
                     shakeTimerStart = shakeTimer;
@@ -124,12 +179,22 @@ public class Grenade : Interactable
         }
     }
 
+    /// <summary>
+    /// Handles interaction with the player by picking up the grenade.
+    /// </summary>
+    /// <param name="thePlayer">The player interacting with the grenade.</param>
     public override void Interact(Player thePlayer)
     {
         base.Interact(thePlayer);
-        PickupCollectible(gameObject, iconIndex,GameManager.instance.currentGrenade);
+        PickupCollectible(gameObject, iconIndex, GameManager.instance.currentGrenade);
     }
 
+    /// <summary>
+    /// Handles picking up and equipping the grenade.
+    /// </summary>
+    /// <param name="collectible">The grenade GameObject to pick up.</param>
+    /// <param name="iconIndex">The index of the grenade icon.</param>
+    /// <param name="currentCollectible">The currently equipped collectible.</param>
     protected override void PickupCollectible(GameObject collectible, int iconIndex, GameObject currentCollectible)
     {
         if (GameManager.instance.currentGrenade != null)

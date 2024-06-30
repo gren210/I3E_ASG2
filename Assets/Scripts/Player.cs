@@ -1,3 +1,9 @@
+/*
+ * Author: Thaqif Adly Bin Mazalan
+ * Date: 30/6/24
+ * Description: Script for controlling the player's behavior, including interaction with objects, shooting, reloading, and managing the flashlight.
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,74 +13,112 @@ using UnityEngine.SceneManagement;
 using System.Runtime.CompilerServices;
 
 public class Player : ScriptManager
-{
-    public static Player instance;
-
+ {
+    /// <summary>
+    /// Stores the current interactables being looked at with raycast.
+    /// </summary>
     Interactable currentInteractable;
 
-    GiftBox currentGiftBox;
-
+    /// <summary>
+    /// Stores the current gun looked at.
+    /// </summary>
     Gun currentGunPickup;
 
+    /// <summary>
+    /// Stores the current grenade looked at.
+    /// </summary>
     Grenade currentGrenadePickup;
 
+    /// <summary>
+    /// Stores the current crystal looked at.
+    /// </summary>
     Crystal currentCrystal;
 
+    /// <summary>
+    /// Stores the current door looked at.
+    /// </summary>
     Door currentDoor;
 
+    /// <summary>
+    /// Stores the current key looked at.
+    /// </summary>
     Key currentKey;
 
+    /// <summary>
+    /// Stores the current lever looked at.
+    /// </summary>
     Lever currentLever;
 
+    /// <summary>
+    /// Stores the current medkit looked at.
+    /// </summary>
     Heal currentHeal;
 
+    /// <summary>
+    /// Stores the current reactor looked at.
+    /// </summary>
     PlaceCrystal currentPlaceCrystal;
 
-    //public GameObject currentGun;
-
-    //[SerializeField]
-    //GameObject equippedGun;
-
-    //[SerializeField]
-    //GameObject equippedGrenade;
-
+    /// <summary>
+    /// Stores the player's flashlight GameObject.
+    /// </summary>
     [SerializeField]
     GameObject flashlight;
 
+    /// <summary>
+    /// The player's controller GameObject.
+    /// </summary>
     public GameObject playerController;
 
+    /// <summary>
+    /// The UI text for interaction prompts.
+    /// </summary>
     public TextMeshProUGUI interactionText;
 
+    /// <summary>
+    /// The UI text for jump prompts.
+    /// </summary>
     public TextMeshProUGUI jumpText;
 
+    /// <summary>
+    /// The player's camera transform.
+    /// </summary>
     public Transform playerCamera;
 
+    /// <summary>
+    /// The distance where the player can interact with objects.
+    /// </summary>
     [SerializeField]
     float interactionDistance;
 
+    /// <summary>
+    /// The Cinemachine virtual camera of the player.
+    /// </summary>
     [SerializeField]
     CinemachineVirtualCamera virtualCamera;
 
+    /// <summary>
+    /// The position where equipped items are held.
+    /// </summary>
     [SerializeField]
     GameObject equipPosition;
 
-    private GameObject playerObject;
-
+    /// <summary>
+    /// Bool to check if the player is in the spaceship in the first level.
+    /// </summary>
     [SerializeField]
     bool inSpaceship;
 
-    private void Awake()
-    {
-        //playerObject = gameObject;    
-    }
-
+    /// <summary>
+    /// This start function initialises all its variables after loading a new scene.
+    /// </summary>
     private void Start()
     {
         GameManager.instance.playerObject = gameObject;
         GameManager.instance.playerCamera = playerCamera;
         GameManager.instance.virtualCamera = virtualCamera;
         GameManager.instance.equipPosition = equipPosition;
-        if (GameManager.instance.currentPrimary != null )
+        if (GameManager.instance.currentPrimary != null)
         {
             GameManager.instance.currentPrimary.transform.SetParent(playerCamera, false);
         }
@@ -84,18 +128,13 @@ public class Player : ScriptManager
         }
         interactionText = GameManager.instance.interactionText;
         jumpText = GameManager.instance.jumpText;
-
-
-
     }
 
     private void Update()
     {
-        Debug.DrawLine(playerCamera.position, playerCamera.position + (playerCamera.forward * interactionDistance), Color.red);
         RaycastHit hitInfo;
         if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hitInfo, interactionDistance))
         {
-            hitInfo.transform.TryGetComponent<GiftBox>(out currentGiftBox);
             hitInfo.transform.TryGetComponent<Gun>(out currentGunPickup);
             hitInfo.transform.TryGetComponent<Grenade>(out currentGrenadePickup);
             hitInfo.transform.TryGetComponent<Crystal>(out currentCrystal);
@@ -125,22 +164,18 @@ public class Player : ScriptManager
         }
     }
 
+    /// <summary>
+    /// Handles interaction with all the interactable game objects.
+    /// </summary>
     void OnInteract()
     {
-        if (currentGiftBox != null)
-        {
-            currentGiftBox.Interact(this);
-        }
         if (currentGunPickup != null)
         {
             currentGunPickup.Interact(this);
         }
-        if (currentGrenadePickup != null)
+        if (currentGrenadePickup != null && !currentGrenadePickup.thrown)
         {
-            if (currentGrenadePickup.thrown == false)
-            {
-                currentGrenadePickup.Interact(this);
-            }
+            currentGrenadePickup.Interact(this);
         }
         if (currentDoor != null)
         {
@@ -168,7 +203,9 @@ public class Player : ScriptManager
         }
     }
 
-
+    /// <summary>
+    /// Handles pausing the game.
+    /// </summary>
     void OnPause()
     {
         CursorLock(false);
@@ -179,28 +216,29 @@ public class Player : ScriptManager
             GameManager.instance.pauseMenu.SetActive(true);
             Time.timeScale = 0f;
         }
-
     }
 
-
+    /// <summary>
+    /// Handles firing the primary weapon or throwing the grenade.
+    /// </summary>
     void OnFire()
     {
-        if (!inSpaceship)
+        if (!inSpaceship && GameManager.instance.currentEquippable != null)
         {
-            if (GameManager.instance.currentEquippable != null)
+            if (GameManager.instance.currentEquippable == GameManager.instance.currentPrimary)
             {
-                if (GameManager.instance.currentEquippable == GameManager.instance.currentPrimary) 
-                {
-                    GameManager.instance.currentPrimary.GetComponent<Gun>().Shoot(this);
-                }
-                else if (GameManager.instance.currentEquippable == GameManager.instance.currentGrenade)
-                {
-                    GameManager.instance.currentEquippable.GetComponent<Grenade>().thrown = true;
-                }
+                GameManager.instance.currentPrimary.GetComponent<Gun>().Shoot(this);
+            }
+            else if (GameManager.instance.currentEquippable == GameManager.instance.currentGrenade)
+            {
+                GameManager.instance.currentEquippable.GetComponent<Grenade>().thrown = true;
             }
         }
     }
 
+    /// <summary>
+    /// Handles reloading the primary weapon.
+    /// </summary>
     void OnReload()
     {
         if (GameManager.instance.currentEquippable == GameManager.instance.currentPrimary)
@@ -209,22 +247,32 @@ public class Player : ScriptManager
         }
     }
 
+    /// <summary>
+    /// Handles equipping the primary gun.
+    /// </summary>
     void OnEquipGun()
     {
-        if(GameManager.instance.currentEquippable != GameManager.instance.currentPrimary && (GameManager.instance.currentPrimary != null))
+        if (GameManager.instance.currentEquippable != GameManager.instance.currentPrimary && GameManager.instance.currentPrimary != null)
         {
             EquipCollectible(GameManager.instance.currentPrimary);
         }
     }
 
+    /// <summary>
+    /// Handles equipping the grenade.
+    /// </summary>
     void OnEquipGrenade()
     {
-        if(GameManager.instance.readySwap == true && !GameManager.instance.currentPrimary.GetComponent<Gun>().reloading && GameManager.instance.currentGrenade != null && GameManager.instance.currentEquippable != GameManager.instance.currentGrenade)
+        if (GameManager.instance.readySwap && !GameManager.instance.currentPrimary.GetComponent<Gun>().reloading && GameManager.instance.currentGrenade != null && GameManager.instance.currentEquippable != GameManager.instance.currentGrenade)
         {
             EquipCollectible(GameManager.instance.currentGrenade);
         }
     }
 
+    /// <summary>
+    /// Equips a collectible item, meant for the primary and grenade.
+    /// </summary>
+    /// <param name="currentCollectible">The collectible item to equip.</param>
     void EquipCollectible(GameObject currentCollectible)
     {
         if (GameManager.instance.currentEquippable != null)
@@ -236,20 +284,18 @@ public class Player : ScriptManager
         GameManager.instance.swapItemSound.Play();
     }
 
+    /// <summary>
+    /// Toggles the player's flashlight on and off.
+    /// </summary>
     void OnFlashlight()
     {
-        if (flashlight.activeSelf == false)
-        {
-            flashlight.SetActive(true);
-            GameManager.instance.flashlightSound.Play();
-        }
-        else
-        {
-            flashlight.SetActive(false);
-            GameManager.instance.flashlightSound.Play();
-        }
+        flashlight.SetActive(!flashlight.activeSelf);
+        GameManager.instance.flashlightSound.Play();
     }
 
+    /// <summary>
+    /// Handles using a medkit.
+    /// </summary>
     void OnHeal()
     {
         if (GameManager.instance.healCount > 0 && GameManager.instance.playerHealth != 100)
@@ -262,7 +308,6 @@ public class Player : ScriptManager
             }
             GameManager.instance.UpdateHealth();
             GameManager.instance.healSound.Play();
-
         }
     }
 }

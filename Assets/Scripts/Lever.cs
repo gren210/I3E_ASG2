@@ -1,35 +1,62 @@
+/*
+ * Author: Thaqif Adly Bin Mazalan
+ * Date: 30/6/24
+ * Description: Manages the interaction with a lever that opens and closes the linked door in level 1.
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Lever : Interactable
 {
+    /// <summary>
+    /// Text displayed when interacting with the lever.
+    /// </summary>
     public string interactText;
 
+    /// <summary>
+    /// Duration for the lever moving from start to target rotation.
+    /// </summary>
     public float openDuration;
 
+    /// <summary>
+    /// Current time during the lever's animation.
+    /// </summary>
     float currentDuration;
 
+    /// <summary>
+    /// The door linked to this lever.
+    /// </summary>
     [SerializeField]
     Door linkedDoor;
 
+    /// <summary>
+    /// The starting rotation of the lever.
+    /// </summary>
     Vector3 startRotation;
 
+    /// <summary>
+    /// The target rotation of the lever when pulled.
+    /// </summary>
     Vector3 targetRotation;
 
+    /// <summary>
+    /// Checks whether the lever is currently opening.
+    /// </summary>
     bool opening;
 
+    /// <summary>
+    /// Checks whether the lever is currently closing.
+    /// </summary>
     bool closing;
 
+    /// <summary>
+    /// Checks whether the lever has been fully opened.
+    /// </summary>
     bool opened;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+  
     void Update()
     {
         if (opening)
@@ -42,7 +69,6 @@ public class Lever : Interactable
                 currentDuration = 0f;
                 opening = false;
                 opened = true;
-
             }
         }
 
@@ -57,15 +83,16 @@ public class Lever : Interactable
                 currentDuration = 0f;
                 closing = false;
                 opened = false;
-
             }
         }
-
     }
 
+    /// <summary>
+    /// Pulls the lever down to open the linked door.
+    /// </summary>
     private void PullLeverDown()
     {
-        if(!opening)
+        if (!opening)
         {
             startRotation = transform.eulerAngles;
             targetRotation = startRotation;
@@ -75,6 +102,9 @@ public class Lever : Interactable
         }
     }
 
+    /// <summary>
+    /// Pulls the lever up to close the linked door.
+    /// </summary>
     private void PullLeverUp()
     {
         if (!closing)
@@ -87,6 +117,10 @@ public class Lever : Interactable
         }
     }
 
+    /// <summary>
+    /// Handles interaction with the lever.
+    /// </summary>
+    /// <param name="thePlayer">The player interacting with the lever.</param>
     public override void Interact(Player thePlayer)
     {
         base.Interact(thePlayer);
