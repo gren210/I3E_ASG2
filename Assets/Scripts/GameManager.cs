@@ -248,12 +248,6 @@ public class GameManager : ScriptManager
     /// </summary>
     public TextMeshProUGUI extractionTimerUI;
 
-
-    /// <summary>
-    /// Timer for spawning enemies.
-    /// </summary>
-    float spawnTimer = 0;
-
     /// <summary>
     /// Int which stores the current scene index.
     /// </summary>
